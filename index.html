@@ -5,28 +5,33 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Trening</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a246a">
+<meta name="theme-color" content="#f76707">
 <link rel="icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--text);background:var(--bg) fixed;font-family:var(--font,Tahoma,sans-serif);font-size:17px;transition:background .4s,color .4s}
+body{margin:0;min-height:100vh;background:var(--bg) fixed;color:var(--text);font-family:var(--font,'Segoe UI',Arial,sans-serif);font-size:17px;transition:background .4s,color .4s}
 body.noanim *,body.noanim *::before,body.noanim *::after{animation:none!important;transition:none!important}
 
 /* ===== MOTYWY ===== */
-body[data-motyw=kolorowy]{--bg:linear-gradient(135deg,#fff3a0 0%,#b8f2d6 45%,#a8e6ff 100%);--panel:rgba(255,255,255,.86);--line:#f72585;--accent:#7209b7;--accent2:#4cc9f0;--text:#2a1450;--muted:#6b5a8a;--btn:linear-gradient(135deg,#ffd93d,#9fe2bf);--btnTxt:#2a1450;--btnSh:#7209b7}
-body[data-motyw=mono]{--bg:#0c0c0c;--panel:#1a1a1a;--line:#ffffff;--accent:#ffffff;--accent2:#9a9a9a;--text:#f2f2f2;--muted:#a0a0a0;--btn:#ffffff;--btnTxt:#000;--btnSh:#7a7a7a}
-body[data-motyw=czerwony]{--bg:linear-gradient(160deg,#1a0004,#6b0012 60%,#2b0006);--panel:rgba(35,0,6,.85);--line:#ff3b4e;--accent:#ff3b4e;--accent2:#ffb3bb;--text:#ffe9ec;--muted:#ffb3bb;--btn:linear-gradient(135deg,#ff3b4e,#b0001e);--btnTxt:#fff;--btnSh:#5c000c}
-body[data-motyw=zielony]{--bg:linear-gradient(160deg,#03230f,#0f5132 60%,#03170b);--panel:rgba(4,30,16,.85);--line:#3ddc84;--accent:#3ddc84;--accent2:#b9f5d0;--text:#e8fff3;--muted:#a6e8c3;--btn:linear-gradient(135deg,#3ddc84,#1f9d55);--btnTxt:#04170c;--btnSh:#0c5a30}
-body[data-motyw=niebieski]{--bg:linear-gradient(160deg,#03174a,#1e5bc6 60%,#041b52);--panel:rgba(6,24,70,.85);--line:#5ec8ff;--accent:#5ec8ff;--accent2:#a8e6ff;--text:#eaf4ff;--muted:#a8cfff;--btn:linear-gradient(135deg,#5ec8ff,#2a74e8);--btnTxt:#021233;--btnSh:#143b86}
-body[data-motyw=xp]{--bg:linear-gradient(180deg,#0a246a,#3a6ea5);--panel:#d4d0c8;--line:#0a246a;--accent:#0a246a;--accent2:#3a6ea5;--text:#000;--muted:#444;--btn:linear-gradient(#f4f3ee,#d6d0c5);--btnTxt:#000;--btnSh:#808080}
+body[data-motyw=firmowy]{--bg:linear-gradient(135deg,#fff4e6,#ffd8a8 55%,#ffb36b);--panel:rgba(255,255,255,.92);--line:#e8772e;--accent:#f76707;--accent2:#ffa94d;--text:#4a2a0c;--muted:#8a5a2b;--btn:linear-gradient(135deg,#ffa94d,#f76707);--btnTxt:#fff;--btnSh:#b44a00;--inBg:#fff;--inTxt:#3b1f05}
+body[data-motyw=retro]{--bg:#e9e7e1;--panel:#fbfbf8;--line:#7d7d7d;--accent:#d9621e;--accent2:#c9c9c9;--text:#222;--muted:#666;--btn:linear-gradient(#ffffff,#dedcd6);--btnTxt:#222;--btnSh:#8a8a8a;--inBg:#fff;--inTxt:#111}
+body[data-motyw=jasny]{--bg:#f5f5f8;--panel:#fff;--line:#dedee6;--accent:#ff8a3d;--accent2:#ffc27a;--text:#1d1d22;--muted:#6a6a75;--btn:linear-gradient(135deg,#ff9f4a,#ff7a1a);--btnTxt:#fff;--btnSh:#c95a10;--inBg:#fff;--inTxt:#111}
+body[data-motyw=ciemny]{--bg:#121216;--panel:#1e1f25;--line:#3a3c46;--accent:#ff9440;--accent2:#ffb36b;--text:#f2f2f5;--muted:#a0a3b1;--btn:linear-gradient(135deg,#ff9440,#e2661a);--btnTxt:#fff;--btnSh:#8c3f0c;--inBg:#2a2c35;--inTxt:#f2f2f5}
+body[data-motyw=mono]{--bg:#000;--panel:#111;--line:#fff;--accent:#fff;--accent2:#8a8a8a;--text:#fff;--muted:#bdbdbd;--btn:#fff;--btnTxt:#000;--btnSh:#6b6b6b;--inBg:#1a1a1a;--inTxt:#fff}
+body[data-motyw=czerwony]{--bg:linear-gradient(160deg,#fdeeee,#f3c3c3);--panel:rgba(255,255,255,.88);--line:#d86b6b;--accent:#d06060;--accent2:#f2b5b5;--text:#4a1f1f;--muted:#8a5555;--btn:linear-gradient(135deg,#f0a0a0,#e08080);--btnTxt:#3d1212;--btnSh:#a85454;--inBg:#fff;--inTxt:#2a1010}
+body[data-motyw=zielony]{--bg:linear-gradient(160deg,#eef8f1,#bfe6cc);--panel:rgba(255,255,255,.88);--line:#6fbf8e;--accent:#4fa371;--accent2:#b8e3c8;--text:#1d3b2a;--muted:#4f7a60;--btn:linear-gradient(135deg,#a8dcb9,#7cc497);--btnTxt:#15301f;--btnSh:#4e8a66;--inBg:#fff;--inTxt:#112a1c}
+body[data-motyw=niebieski]{--bg:linear-gradient(160deg,#eef5fc,#bcd8f2);--panel:rgba(255,255,255,.88);--line:#6fa3d6;--accent:#4f86c2;--accent2:#b9d7f2;--text:#1b2f4a;--muted:#4f6b8c;--btn:linear-gradient(135deg,#b4d6f5,#82b4e2);--btnTxt:#10233b;--btnSh:#3f6fa3;--inBg:#fff;--inTxt:#10233b}
+body[data-motyw=xp]{--bg:linear-gradient(180deg,#0a246a,#3a6ea5);--panel:#d4d0c8;--line:#0a246a;--accent:#0a246a;--accent2:#3a6ea5;--text:#000;--muted:#444;--btn:linear-gradient(#f4f3ee,#d6d0c5);--btnTxt:#000;--btnSh:#808080;--inBg:#fff;--inTxt:#000}
 body[data-motyw=xp] .card{border-radius:6px 6px 2px 2px}
 body[data-motyw=xp] .btn{border-radius:3px}
+body[data-motyw=retro] .card{border-radius:4px;box-shadow:3px 3px 0 #9a9a9a}
+body[data-motyw=retro] .btn{border-radius:3px;box-shadow:2px 2px 0 #8a8a8a}
 
 /* ===== ELEMENTY ===== */
 .hidden{display:none!important}
 .muted{color:var(--muted);font-size:.93em}
-.bad{color:#e63946;font-weight:800}
-.ok{color:#14906e;font-weight:800}
+.bad{color:#d62839;font-weight:800}
+.ok{color:#15803d;font-weight:800}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .between{justify-content:space-between}
 .ico{width:26px;height:26px;object-fit:contain;vertical-align:middle}
@@ -36,16 +41,17 @@ h1,h2,h3{margin:.2em 0}
 h2{font-size:1.7em}
 
 .btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;min-height:60px;padding:14px 26px;font:inherit;font-weight:700;font-size:1.12em;border:2px solid var(--line);border-radius:12px;background:var(--btn);color:var(--btnTxt);cursor:pointer;box-shadow:0 6px 0 var(--btnSh);transition:transform .12s,box-shadow .12s,filter .2s;text-decoration:none}
-.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
 .btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--btnSh)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
 .btn.ghost{background:transparent;color:var(--text);box-shadow:none}
 .btn.small{min-height:44px;padding:8px 16px;font-size:1em}
 .btn.danger{background:linear-gradient(135deg,#e63946,#9d0208);color:#fff;box-shadow:0 6px 0 #5c0007}
 .btn.wide{width:100%}
-.btn.sel{outline:3px solid var(--accent2)}
+.btn.sel{outline:3px solid var(--accent2);outline-offset:2px}
+.btn.kb{min-height:64px;font-size:1.25em;padding:10px}
 
-input,select,textarea{width:100%;font:inherit;padding:14px;border-radius:10px;border:2px solid var(--line);background:#fff;color:#111;margin:6px 0 16px;box-sizing:border-box}
+input,select,textarea{width:100%;font:inherit;padding:14px;border-radius:10px;border:2px solid var(--line);background:var(--inBg);color:var(--inTxt);margin:6px 0 16px;box-sizing:border-box}
 input[type=checkbox],input[type=range]{width:auto}
 textarea{min-height:260px;font-family:Consolas,'Courier New',monospace;font-size:.95em}
 label{font-weight:700;display:block}
@@ -54,11 +60,11 @@ label{font-weight:700;display:block}
 .pop{animation:pop .45s both}
 .shake{animation:shake .5s}
 
-.bar{height:22px;border-radius:99px;background:rgba(0,0,0,.15);overflow:hidden;border:1px solid var(--line);margin:10px 0}
+.bar{height:22px;border-radius:99px;background:rgba(127,127,127,.2);overflow:hidden;border:1px solid var(--line);margin:10px 0}
 .bar>i{display:block;height:100%;width:var(--w,0%);background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .8s cubic-bezier(.2,.8,.2,1);position:relative}
-.bar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:sheen 2.2s infinite}
+.bar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:sheen 2.2s infinite}
 
-.chip{border:2px solid var(--line);border-radius:99px;padding:8px 16px;font-weight:700;background:rgba(255,255,255,.1)}
+.chip{border:2px solid var(--line);border-radius:99px;padding:8px 16px;font-weight:700;background:rgba(127,127,127,.12)}
 
 /* ===== LOGOWANIE ===== */
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
@@ -67,12 +73,11 @@ label{font-weight:700;display:block}
 
 /* ===== NAGŁÓWEK I MENU ===== */
 #app{max-width:1400px;margin:0 auto;padding:22px}
-.head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding:18px 26px}
-.logo-wide{height:64px;max-width:440px;object-fit:contain}
+.head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding:16px 24px}
+.logo-wide{height:60px;max-width:400px;object-fit:contain}
 .chips{display:flex;gap:10px;flex-wrap:wrap}
-.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:20px 0}
+.nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:6px 0 24px}
 .nav .btn{min-height:96px;font-size:1.15em;flex-direction:column}
-@media(max-width:1000px){.nav{grid-template-columns:repeat(2,1fr)}}
 
 /* ===== KURSY ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
@@ -82,15 +87,15 @@ label{font-weight:700;display:block}
 .section-t{margin:28px 0 12px}
 
 /* ===== ZADANIA ===== */
-.task{font-size:1.2em;line-height:1.7;white-space:pre-wrap;padding:22px;border-radius:12px;background:rgba(255,255,255,.12);border:1px dashed var(--line)}
-.hint{background:rgba(255,230,80,.22);border-left:8px solid #ffd93d;padding:14px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
-.expl{background:rgba(76,201,240,.18);border-left:8px solid var(--accent2);padding:16px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
+.task{font-size:1.2em;line-height:1.7;white-space:pre-wrap;padding:22px;border-radius:12px;background:rgba(127,127,127,.1);border:1px dashed var(--line)}
+.hint{background:rgba(255,200,60,.22);border-left:8px solid #f5b800;padding:14px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
+.expl{background:rgba(76,160,240,.15);border-left:8px solid var(--accent2);padding:16px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
 .result{margin-top:14px;font-size:1.15em}
 
 /* ===== KALENDARZ ===== */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
 .cal .hd{text-align:center;font-weight:700;color:var(--muted);padding:6px}
-.day{min-height:72px;border:2px solid var(--line);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,.08);position:relative;font-weight:700}
+.day{min-height:72px;border:2px solid var(--line);border-radius:10px;padding:8px;cursor:pointer;background:rgba(127,127,127,.08);position:relative;font-weight:700}
 .day.empty{border:none;background:none;cursor:default}
 .day.today{outline:3px solid var(--accent2)}
 .day.sel{background:var(--accent);color:#fff}
@@ -117,14 +122,19 @@ label{font-weight:700;display:block}
 .hrow span:first-child{width:200px;flex-shrink:0}
 .hrow .bar{flex:1;margin:0}
 
+/* ===== KALKULATOR ===== */
+.calc-disp{font-size:1.6em;font-family:Consolas,'Courier New',monospace;text-align:right}
+.calc-out{min-height:60px;font-size:1.4em;padding:12px 4px;text-align:right}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:14px}
+.calc-eq{width:100%;margin-top:12px}
+
 /* ===== USTAWIENIA ===== */
-.motyw-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.swatch{display:inline-block;width:26px;height:26px;border-radius:6px;border:2px solid #000;vertical-align:middle;margin-right:8px}
-.font-btn{font-size:1.1em}
-.prompt-box{min-height:340px;font-size:.95em;background:#fff;color:#111}
+.motyw-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.swatch{display:inline-block;width:26px;height:26px;border-radius:6px;border:2px solid #666;vertical-align:middle;margin-right:8px}
+.prompt-box{min-height:340px;font-size:.95em}
 
 /* ===== EFEKTY ===== */
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 26px;border-radius:99px;font-weight:700;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:pop .35s}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--btn);color:var(--btnTxt);padding:14px 26px;border-radius:99px;font-weight:700;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:pop .35s;border:2px solid var(--line)}
 .conf{position:fixed;top:-20px;width:10px;height:14px;z-index:998;animation:fall linear forwards;border-radius:2px}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
@@ -134,7 +144,7 @@ label{font-weight:700;display:block}
 @keyframes float{50%{transform:translateY(-10px)}}
 </style>
 </head>
-<body data-motyw="kolorowy">
+<body data-motyw="firmowy">
 
 <div id="login">
   <div class="card login-card">
@@ -149,21 +159,17 @@ label{font-weight:700;display:block}
 
 <div id="app" class="hidden">
   <header class="card head">
-    <img src="logo-wide.png" class="logo-wide" alt="Logo" onerror="this.outerHTML='<span class=brand-t>TRENING</span>'">
+    <div class="row">
+      <button id="backBtn" class="btn small ghost hidden" onclick="wstecz()">← Wróć</button>
+      <button id="homeBtn" class="btn small ghost hidden" onclick="start()">Start</button>
+      <img src="logo-wide.png" class="logo-wide" alt="Logo" onerror="this.outerHTML='<span class=brand-t>TRENING</span>'">
+    </div>
     <div class="chips">
       <span class="chip">Punkty: <b id="ptsChip">0</b></span>
       <span class="chip">Seria: <b id="streakChip">0</b></span>
       <span class="chip">Rekord: <b id="recChip">0</b></span>
     </div>
   </header>
-  <nav class="nav">
-    <button class="btn" onclick="go('kursy')"><img class="ico" src="courses.png" alt="" onerror="this.style.display='none'">Kursy</button>
-    <button class="btn" onclick="go('kalendarz')"><img class="ico" src="calendar.png" alt="" onerror="this.style.display='none'">Kalendarz</button>
-    <button class="btn" onclick="go('statystyki')"><img class="ico" src="stats.png" alt="" onerror="this.style.display='none'">Statystyki</button>
-    <button class="btn" onclick="go('historia')"><img class="ico" src="history.png" alt="" onerror="this.style.display='none'">Historia</button>
-    <button class="btn" onclick="go('help')"><img class="ico" src="help.png" alt="" onerror="this.style.display='none'">Help</button>
-    <button class="btn" onclick="go('ustawienia')"><img class="ico" src="settings.png" alt="" onerror="this.style.display='none'">Ustawienia</button>
-  </nav>
   <main id="view"></main>
 </div>
 
@@ -171,10 +177,10 @@ label{font-weight:700;display:block}
 // ===================== KONFIGURACJA =====================
 const KLUCZ = "trening_v3";
 const HASLO = "matura2026";       // <-- zmień na własne
-const IKONA_EXT = "png";          // jeśli ikony są w SVG, zmień na "svg"
+const IKONA_EXT = "png";
 
 const PRZEDMIOTY = {
-  "Matematyka": ["Funkcje","Równania","Geometria","Ciągi","Prawdopodobieństwo","Trygonometria","Pochodna"],
+  "Matematyka": ["Funkcje","Równania","Geometria","Ciągi","Prawdopodobieństwo","Trygonometria","Pochodna","Ułamki"],
   "Język angielski": ["Słownictwo","Gramatyka","Czytanie","Pisanie","Słuchanie"],
   "Język polski": ["Lektury","Wypracowanie","Gramatyka","Interpretacja tekstu","Środki stylistyczne"],
   "Informatyka": ["Algorytmy","Python","Bazy danych","Systemy operacyjne","Sieci komputerowe","HTML i CSS"]
@@ -182,11 +188,14 @@ const PRZEDMIOTY = {
 const PRZ_IKONA = {"Matematyka":"math","Język angielski":"english","Język polski":"polish","Informatyka":"it"};
 
 const MOTYWY = [
-  ["kolorowy","Y2K kolorowy","linear-gradient(135deg,#ffd93d,#9fe2bf,#4cc9f0)"],
-  ["mono","Czarno-biały","linear-gradient(#ffffff,#000000)"],
-  ["czerwony","Czerwony","linear-gradient(#ff3b4e,#6b0012)"],
-  ["zielony","Zielony","linear-gradient(#3ddc84,#0f5132)"],
-  ["niebieski","Niebieski","linear-gradient(#5ec8ff,#1e5bc6)"],
+  ["firmowy","Firmowy pomarańcz","linear-gradient(135deg,#ffa94d,#f76707)"],
+  ["retro","Retro biały","linear-gradient(#ffffff,#d9d9d9)"],
+  ["jasny","Jasny","linear-gradient(#ffffff,#eceef2)"],
+  ["ciemny","Ciemny","linear-gradient(#2a2c35,#121216)"],
+  ["mono","Czarno-biały","linear-gradient(#000000,#ffffff)"],
+  ["czerwony","Czerwony pastelowy","linear-gradient(#e88a8a,#cf6666)"],
+  ["zielony","Zielony pastelowy","linear-gradient(#8fd0a8,#5fb082)"],
+  ["niebieski","Niebieski pastelowy","linear-gradient(#a8cdf0,#6fa3d6)"],
   ["xp","Retro XP (granat i szary)","linear-gradient(#0a246a,#d4d0c8)"]
 ];
 const CZCIONKI = {
@@ -199,7 +208,7 @@ const CZCIONKI = {
 };
 const MIESIACE = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
 
-// ===================== ZADANIA SYSTEMOWE (domyślne) =====================
+// ===================== ZADANIA SYSTEMOWE (do ćwiczenia) =====================
 // odpowiedz: kilka dopuszczalnych form oddzielaj znakiem |
 const SYSTEM = [
   {id:"sys-mat", przedmiot:"Matematyka", temat:"Memy i liczby", sys:true, zadania:[
@@ -211,18 +220,48 @@ const SYSTEM = [
      wyjasnienie:"25 : 5 = 5. Każda osoba płaci 5 zł, a kebab nadal jest legendarny."},
     {tresc:"Ceny paliw wzrosły z 6,00 zł do 7,20 zł za litr. O ile procent wzrosły? Wpisz samą liczbę.",
      odpowiedz:"20", podpowiedz:"Oblicz różnicę, a potem podziel ją przez starą cenę.",
-     wyjasnienie:"Wzrost to 1,20 zł. 1,20 : 6,00 = 0,2 = 20%."}
+     wyjasnienie:"Wzrost to 1,20 zł. 1,20 : 6,00 = 0,2 = 20%."},
+    {tresc:"Dorota Wellman wypija 3 kawy dziennie. Ile kaw wypije w ciągu tygodnia (7 dni)?",
+     odpowiedz:"21", podpowiedz:"Pomnóż 3 przez 7.",
+     wyjasnienie:"3 × 7 = 21. Dorota przy takim tempie ma energię na cały program."},
+    {tresc:"Blok ma 4 klatki, a w każdej klatce 9 mieszkań. Ile mieszkań ma ten blok?",
+     odpowiedz:"36", podpowiedz:"Najpierw policz mieszkania w jednej klatce.",
+     wyjasnienie:"4 × 9 = 36 mieszkań. Blok ekipa, pełne obłożenie."},
+    {tresc:"Kebab za 25 zł i napój za 7 zł. Ile płacisz za zestaw?",
+     odpowiedz:"32", podpowiedz:"Dodaj obie ceny.",
+     wyjasnienie:"25 + 7 = 32 zł."},
+    {tresc:"Ile wynosi 2/3 + 1/6? Wpisz wynik jako ułamek zwykły.",
+     odpowiedz:"5/6", podpowiedz:"Sprowadź oba ułamki do mianownika 6.",
+     wyjasnienie:"2/3 = 4/6, więc 4/6 + 1/6 = 5/6."},
+    {tresc:"Ile wynosi 3/4 z 200?",
+     odpowiedz:"150", podpowiedz:"Podziel 200 przez 4, a potem pomnóż przez 3.",
+     wyjasnienie:"200 : 4 = 50, 50 × 3 = 150."},
+    {tresc:"Rizz na poziomie 7 na 10. Ile to procent?",
+     odpowiedz:"70", podpowiedz:"7 z 10 to 7/10.",
+     wyjasnienie:"7/10 = 0,7 = 70%. Rizz na poziomie wyższym niż Twój, bez cienia wątpliwości."}
   ]},
   {id:"sys-ang", przedmiot:"Język angielski", temat:"Slang i memy", sys:true, zadania:[
     {tresc:"Co oznacza slang „rizz”?\nA) zmęczenie\nB) umiejętność podrywu\nC) rodzaj samochodu\nWpisz literę.",
      odpowiedz:"B", podpowiedz:"Pomyśl o uroku osobistym i tym, jak ktoś zagaduje.",
      wyjasnienie:"Rizz to slangowe określenie zdolności do podrywania ludzi i budowania sympatii."},
     {tresc:"Uzupełnij jednym słowem: The release of GTA VI has been ______ again.",
-     odpowiedz:"delayed", podpowiedz:"Przesunięta na późniejszy termin (passive voice).",
+     odpowiedz:"delayed", podpowiedz:"Przesunięta na późniejszy termin (strona bierna).",
      wyjasnienie:"Has been delayed, czyli zostało przesunięte. Czasownik delay w stronie biernej: be delayed."},
     {tresc:"Dorota Wellman often ______ guests on TV. Wpisz jedno słowo: czasownik oznaczający przeprowadzanie wywiadu.",
      odpowiedz:"interview", podpowiedz:"Rzeczownik to „interview”, a czasownik jest taki sam.",
-     wyjasnienie:"To interview (przeprowadzić wywiad). Dorota often interviews guests, czyli zaprasza gości i z nimi rozmawia."}
+     wyjasnienie:"To interview (przeprowadzić wywiad). Dorota often interviews guests, czyli zaprasza gości i z nimi rozmawia."},
+    {tresc:"Co znaczy slang „no cap”?\nA) bez kłamstwa, serio\nB) bez czapki\nC) bez pieniędzy\nWpisz literę.",
+     odpowiedz:"A", podpowiedz:"Cap oznacza kłamstwo.",
+     wyjasnienie:"No cap = mówię serio, bez kłamstwa. Cap to w slangu właśnie kłamstwo."},
+    {tresc:"Co znaczy slang „bussin” o jedzeniu?\nA) nudne\nB) bardzo dobre\nC) zepsute\nWpisz literę.",
+     odpowiedz:"B", podpowiedz:"Mówi się tak o kebabie, który jest naprawdę dobry.",
+     wyjasnienie:"Bussin to bardzo dobre, pyszne. Słowo pochodzi z mowy młodzieżowej, a nie z podręcznika."},
+    {tresc:"Co znaczy „lowkey”?\nA) całkowicie\nB) trochę, po cichu\nC) głośno\nWpisz literę.",
+     odpowiedz:"B", podpowiedz:"Słowo „low” znaczy niski, cichy.",
+     wyjasnienie:"Lowkey oznacza trochę albo po cichu, na przykład: I lowkey love this song."},
+    {tresc:"Wpisz jedno słowo będące synonimem „that's crazy” w slangu (zacznij od litery i).",
+     odpowiedz:"insane", podpowiedz:"Oznacza coś szalonego, niesamowitego.",
+     wyjasnienie:"Insane znaczy szalony, niesamowity. Wild też jest poprawne w tym kontekście."}
   ]},
   {id:"sys-pol", przedmiot:"Język polski", temat:"Blok, kremówka i hip-hop", sys:true, zadania:[
     {tresc:"Dokończ wyrażenie z memów: „Blok ___”. Wpisz jedno słowo oznaczające grupę znajomych z osiedla.",
@@ -233,7 +272,16 @@ const SYSTEM = [
      wyjasnienie:"Poprawna pisownia to kremówka, z literą „ó”. Chociaż papież 2137 pewnie nie zwróci na to uwagi."},
     {tresc:"Kremówka papieska to rodzaj ___. Wpisz jedno słowo.",
      odpowiedz:"ciasto|deser", podpowiedz:"Słodki wypiek z kremem.",
-     wyjasnienie:"Kremówka to ciasto z kremem i kruchym spodem. Zwykle je się je jako deser."}
+     wyjasnienie:"Kremówka to ciasto z kremem i kruchym spodem. Zwykle je się ją jako deser."},
+    {tresc:"Dokończ z memów: „Ceny paliw idą w górę, a ja ___”. Wpisz jedno słowo.",
+     odpowiedz:"płacę|płaczę", podpowiedz:"Słowo brzmi podobnie do tego, co robisz przy dystrybutorze.",
+     wyjasnienie:"Najczęściej: „płacę”. Wersja „płaczę” jest równie popularna i pasuje do tego samego kontekstu."},
+    {tresc:"Wpisz rzeczownik oznaczający osobę, która rapuje.",
+     odpowiedz:"raper", podpowiedz:"Od czasownika „rapować”.",
+     wyjasnienie:"Raper to wykonawca rapu. Rzeczownik tworzymy od czasownika przez dodanie końcówki -er."},
+    {tresc:"Wpisz poprawną formę: „pięciu ziomków” czy „pięciu ziomek”?",
+     odpowiedz:"pięciu ziomków", podpowiedz:"Po liczebnikach „pięć” i wyższych rzeczownik przyjmuje dopełniacz liczby mnogiej.",
+     wyjasnienie:"Poprawnie jest: pięciu ziomków. Forma „ziomek” jest tu niepoprawna."}
   ]},
   {id:"sys-inf", przedmiot:"Informatyka", temat:"Python dla memów", sys:true, zadania:[
     {tresc:"Co wypisze ten kod w Pythonie?\nprint('kebab' * 2)",
@@ -244,14 +292,26 @@ const SYSTEM = [
      wyjasnienie:"2 ** 10 oznacza 2 do potęgi 10, czyli 1024."},
     {tresc:"Jak nazywa się w Pythonie brak wartości? Wpisz słowo kluczowe.",
      odpowiedz:"None", podpowiedz:"Zaczyna się wielką literą N.",
-     wyjasnienie:"None to specjalna wartość oznaczająca brak wartości. Sprawdzasz ją przez is None."}
+     wyjasnienie:"None to specjalna wartość oznaczająca brak wartości. Sprawdzasz ją przez is None."},
+    {tresc:"Co wypisze ten kod?\nprint(len('kremówka'))",
+     odpowiedz:"9", podpowiedz:"Policz wszystkie litery, w tym ó.",
+     wyjasnienie:"k-r-e-m-ó-w-k-a to 9 znaków. Funkcja len zwraca liczbę znaków."},
+    {tresc:"Ile wynosi 7 // 2 w Pythonie?",
+     odpowiedz:"3", podpowiedz:"Dwa slashe oznaczają dzielenie całkowite.",
+     wyjasnienie:"// zwraca część całkowitą z dzielenia: 7 : 2 = 3 reszty 1."},
+    {tresc:"Co zwróci wyrażenie 'GTA' in 'GTA VI'?\nWpisz True albo False.",
+     odpowiedz:"True|true", podpowiedz:"Czy napis GTA występuje w napisie GTA VI?",
+     wyjasnienie:"Operator in sprawdza, czy jeden napis zawiera się w drugim. Tak, więc wynik to True."},
+    {tresc:"Jakiego typu jest wartość 5.0 w Pythonie? Wpisz nazwę typu.",
+     odpowiedz:"float", podpowiedz:"Liczba z kropką dziesiętną.",
+     wyjasnienie:"Liczby zmiennoprzecinkowe mają typ float, czyli type(5.0) zwraca float."}
   ]}
 ];
 
 // ===================== STAN =====================
 function domyslne(){
   return {
-    ustawienia: {motyw:"kolorowy", czcionka:"Segoe UI", rozmiar:17, anim:true},
+    ustawienia: {motyw:"firmowy", czcionka:"Segoe UI", rozmiar:17, anim:true, kalk:false, kalkTryb:"prosty", mieszane:false},
     kursy: [], historia: [], wydarzenia: [],
     punkty: 0, seria: 0, maxSeria: 0, sysOk: {}
   };
@@ -260,14 +320,18 @@ function wczytaj(){
   const d = domyslne();
   try {
     const s = JSON.parse(localStorage.getItem(KLUCZ) || "null");
-    if (s) return {...d, ...s, ustawienia: {...d.ustawienia, ...(s.ustawienia || {})}};
+    if (s){
+      const u = {...d.ustawienia, ...(s.ustawienia || {})};
+      if (!MOTYWY.some(m => m[0] === u.motyw)) u.motyw = "firmowy";
+      return {...d, ...s, ustawienia: u};
+    }
   } catch(e){}
   return d;
 }
 let dane = wczytaj();
 let odpowiedziono = false, uzytaPodpowiedz = false, aktualne = {id:null, i:0};
 let cal = {y: new Date().getFullYear(), m: new Date().getMonth(), sel: null};
-cal.sel = klucz(new Date());
+let stos = [], biezacy = {w:"kursy", a:null, b:null};
 
 // ===================== POMOCNICZE =====================
 const $ = id => document.getElementById(id);
@@ -292,7 +356,8 @@ function toast(t){
   setTimeout(() => el.remove(), 2200);
 }
 function konfetti(){
-  const kolory = ["#FFD93D","#9FE2BF","#4CC9F0","#F72585","#7209B7"];
+  if (!dane.ustawienia.anim) return;
+  const kolory = ["#ffa94d","#f76707","#ffd8a8","#ffffff","#8a5a2b"];
   for (let i = 0; i < 90; i++){
     const c = document.createElement("div");
     c.className = "conf";
@@ -316,12 +381,12 @@ function applyUstawienia(){
   document.body.classList.toggle("noanim", !u.anim);
 }
 
-// ===================== LOGOWANIE I ROUTING =====================
+// ===================== LOGOWANIE I NAWIGACJA =====================
 function zaloguj(){
   if ($("pass").value === HASLO){
     $("login").classList.add("hidden");
     $("app").classList.remove("hidden");
-    go("kursy");
+    start();
   } else {
     $("passErr").classList.remove("hidden");
     const k = document.querySelector("#login .card");
@@ -329,18 +394,37 @@ function zaloguj(){
     setTimeout(() => k.classList.remove("shake"), 500);
   }
 }
-function go(widok, a, b){
-  const mapa = {
-    kursy: renderKursy, nowy: renderNowy, kurs: () => renderKurs(a),
-    dodaj: () => renderDodaj(a), rozwiazuj: () => renderRozwiazuj(a, b || 0),
-    kalendarz: renderKalendarz, statystyki: renderStatystyki,
-    historia: renderHistoria, help: renderHelp, ustawienia: renderUstawienia
-  };
-  mapa[widok]();
+const MAPA = {
+  kursy: () => renderKursy(), nowy: () => renderNowy(),
+  kurs: a => renderKurs(a), dodaj: a => renderDodaj(a),
+  rozwiazuj: (a, b) => renderRozwiazuj(a, b || 0),
+  kalendarz: () => renderKalendarz(), statystyki: () => renderStatystyki(),
+  historia: () => renderHistoria(), help: () => renderHelp(),
+  kalkulator: () => renderKalkulator(), ustawienia: () => renderUstawienia()
+};
+function pokaz(){
+  const hub = biezacy.w === "kursy";
+  $("backBtn").classList.toggle("hidden", hub);
+  $("homeBtn").classList.toggle("hidden", hub);
+  MAPA[biezacy.w](biezacy.a, biezacy.b);
   window.scrollTo({top: 0, behavior: "smooth"});
 }
+function go(w, a, b){ stos.push(biezacy); biezacy = {w, a, b}; pokaz(); }      // wejście w nowy ekran
+function przejdz(w, a, b){ biezacy = {w, a, b}; pokaz(); }                    // zmiana bez cofania
+function wstecz(){ biezacy = stos.pop() || {w:"kursy", a:null, b:null}; pokaz(); }
+function start(){ stos = []; biezacy = {w:"kursy", a:null, b:null}; pokaz(); }
 
 // ===================== KURSY =====================
+function navHTML(){
+  const pozycje = [
+    ["kalendarz","Kalendarz","calendar"], ["statystyki","Statystyki","stats"],
+    ["historia","Historia","history"], ["help","Help","help"]
+  ];
+  if (dane.ustawienia.kalk) pozycje.push(["kalkulator","Kalkulator","calc"]);
+  pozycje.push(["ustawienia","Ustawienia","settings"]);
+  return `<nav class="nav">${pozycje.map(([w,t,ic]) =>
+    `<button class="btn" onclick="go('${w}')">${ikona(ic)}${t}</button>`).join("")}</nav>`;
+}
 function kartaKursu(k, systemowy){
   const p = proc(k);
   return `<div class="card course" onclick="go('kurs','${k.id}')">
@@ -354,8 +438,9 @@ function kartaKursu(k, systemowy){
   </div>`;
 }
 function renderKursy(){
-  let h = `<div class="row between"><h2>Moje kursy</h2>
-    <button class="btn" onclick="go('nowy')"><img class="ico" src="add.png" alt="" onerror="this.style.display='none'">Nowy kurs</button></div>`;
+  let h = navHTML();
+  h += `<div class="row between"><h2>Moje kursy</h2>
+    <button class="btn" onclick="go('nowy')">${ikona("add")}Nowy kurs</button></div>`;
   if (!dane.kursy.length) h += `<div class="card"><p>Nie masz jeszcze kursów. Dodaj pierwszy, np. z matematyki.</p></div>`;
   h += `<div class="grid">${dane.kursy.map(k => kartaKursu(k, false)).join("")}</div>`;
   h += `<h2 class="section-t">Zadania systemowe do ćwiczeń</h2><div class="grid">${SYSTEM.map(k => kartaKursu(k, true)).join("")}</div>`;
@@ -371,7 +456,7 @@ function renderNowy(){
     <datalist id="tematy"></datalist>
     <div class="row">
       <button class="btn" onclick="zapiszKurs()">Utwórz</button>
-      <button class="btn ghost" onclick="go('kursy')">Anuluj</button>
+      <button class="btn ghost" onclick="wstecz()">Anuluj</button>
     </div></div>`);
   odswiezTematy();
 }
@@ -385,11 +470,11 @@ function zapiszKurs(){
   dane.kursy.push({id: Date.now().toString(), przedmiot: p, temat: t, zadania: [], ok: []});
   zapisz();
   toast("Kurs utworzony");
-  go("kursy");
+  start();
 }
 function renderKurs(id){
   const k = kurs(id);
-  if (!k) return go("kursy");
+  if (!k) return start();
   const p = proc(k);
   V(`<div class="card pop">
     <div class="row">${ikona(PRZ_IKONA[k.przedmiot], "big")}
@@ -397,11 +482,9 @@ function renderKurs(id){
     <div class="bar" style="--w:${p}%"><i></i></div>
     <p class="muted">Opanowane zadania: ${czyOk(k).length} z ${k.zadania.length} (${p}%)</p>
     <div class="row" style="margin-top:18px">
-      <button class="btn" ${k.zadania.length ? "" : "disabled"} onclick="go('rozwiazuj','${id}',0)">
-        <img class="ico" src="explain.png" alt="" onerror="this.style.display='none'">Rozwiązuj zadania</button>
-      ${k.sys ? "" : `<button class="btn" onclick="go('dodaj','${id}')"><img class="ico" src="add.png" alt="" onerror="this.style.display='none'">Dodaj treść</button>`}
-      <button class="btn ghost" onclick="go('kursy')">Wstecz</button>
-      ${k.sys ? "" : `<button class="btn small danger" onclick="usunKurs('${id}')"><img class="ico" src="delete.png" alt="" onerror="this.style.display='none'">Usuń kurs</button>`}
+      <button class="btn" ${k.zadania.length ? "" : "disabled"} onclick="go('rozwiazuj','${id}',0)">${ikona("explain")}Rozwiązuj zadania</button>
+      ${k.sys ? "" : `<button class="btn" onclick="go('dodaj','${id}')">${ikona("add")}Dodaj treść</button>`}
+      ${k.sys ? "" : `<button class="btn small danger" onclick="usunKurs('${id}')">${ikona("delete")}Usuń kurs</button>`}
     </div></div>`);
 }
 function usunKurs(id){
@@ -409,7 +492,7 @@ function usunKurs(id){
   dane.kursy = dane.kursy.filter(k => k.id !== id);
   dane.wydarzenia = dane.wydarzenia.map(w => w.kursId === id ? {...w, kursId: ""} : w);
   zapisz();
-  go("kursy");
+  start();
 }
 
 // ===================== DODAJ TREŚĆ =====================
@@ -421,11 +504,11 @@ const PRZYKLAD = `[
 ]`;
 function renderDodaj(id){
   V(`<div class="card pop"><h2>Dodaj treść</h2>
-    <p class="muted">Wklej zadania w formacie JSON. Pola <b>tresc</b> i <b>odpowiedz</b> są wymagane, <b>podpowiedz</b> i <b>wyjasnienie</b> opcjonalne. Kilka dopuszczalnych odpowiedzi oddziel znakiem | . Gotowy prompt do AI znajdziesz w zakładce Help.</p>
+    <p class="muted">Wklej zadania w formacie JSON. Pola <b>tresc</b> i <b>odpowiedz</b> są wymagane, <b>podpowiedz</b> i <b>wyjasnienie</b> opcjonalne. Kilka dopuszczalnych odpowiedzi oddziel znakiem |. Gotowy prompt do AI znajdziesz w Help.</p>
     <textarea id="json">${esc(PRZYKLAD)}</textarea>
     <div class="row">
       <button class="btn" onclick="zapiszZadania('${id}')">Zapisz zadania</button>
-      <button class="btn ghost" onclick="go('kurs','${id}')">Wstecz</button>
+      <button class="btn ghost" onclick="wstecz()">Wstecz</button>
     </div></div>`);
 }
 function zapiszZadania(id){
@@ -443,13 +526,13 @@ function zapiszZadania(id){
   zapisz();
   konfetti();
   toast(`Dodano ${nowe.length} zadań`);
-  go("kurs", id);
+  przejdz("kurs", id);
 }
 
 // ===================== ROZWIĄZYWANIE =====================
 function renderRozwiazuj(id, i){
   const k = kurs(id);
-  if (!k || !k.zadania.length) return go("kurs", id);
+  if (!k || !k.zadania.length) return przejdz("kurs", id);
   if (i >= k.zadania.length){
     const p = proc(k);
     V(`<div class="card pop" style="text-align:center">
@@ -457,8 +540,8 @@ function renderRozwiazuj(id, i){
       <p>Opanowałeś <b>${czyOk(k).length}</b> z <b>${k.zadania.length}</b> zadań (${p}%).</p>
       <div class="bar" style="--w:${p}%"><i></i></div>
       <div class="row" style="justify-content:center;margin-top:16px">
-        <button class="btn" onclick="go('rozwiazuj','${id}',0)">Od początku</button>
-        <button class="btn ghost" onclick="go('kurs','${id}')">Wróć do kursu</button>
+        <button class="btn" onclick="przejdz('rozwiazuj','${id}',0)">Od początku</button>
+        <button class="btn ghost" onclick="wstecz()">Wróć do kursu</button>
       </div></div>`);
     konfetti();
     return;
@@ -477,9 +560,9 @@ function renderRozwiazuj(id, i){
       onkeydown="klawisz(event,'${id}',${i})">
     <div class="row">
       <button class="btn" id="btnOdp" onclick="sprawdzOdp('${id}',${i})">Odpowiedz</button>
-      <button class="btn" style="background:linear-gradient(135deg,#4cc9f0,#7209b7);color:#fff" onclick="pokazPodpowiedz()"><img class="ico" src="hint.png" alt="" onerror="this.style.display='none'">Podpowiedź (-5 pkt)</button>
-      <button class="btn" onclick="pokazWyjasnienie()"><img class="ico" src="explain.png" alt="" onerror="this.style.display='none'">Wyjaśnienie</button>
-      <button class="btn ghost" onclick="go('rozwiazuj','${id}',${i + 1})"><img class="ico" src="next.png" alt="" onerror="this.style.display='none'">Następne</button>
+      <button class="btn" style="background:linear-gradient(135deg,#ffd166,#f4a261);color:#3b1f05" onclick="pokazPodpowiedz()">${ikona("hint")}Podpowiedź (−5 pkt)</button>
+      <button class="btn" onclick="pokazWyjasnienie()">${ikona("explain")}Wyjaśnienie</button>
+      <button class="btn ghost" onclick="przejdz('rozwiazuj','${id}',${i + 1})">${ikona("next")}Następne</button>
     </div>
     <div id="podp"></div>
     <div id="wynik" class="result"></div>
@@ -489,7 +572,7 @@ function renderRozwiazuj(id, i){
 }
 function klawisz(e, id, i){
   if (e.key !== "Enter") return;
-  if (odpowiedziono) go("rozwiazuj", id, i + 1);
+  if (odpowiedziono) przejdz("rozwiazuj", id, i + 1);
   else sprawdzOdp(id, i);
 }
 function pokazPodpowiedz(){
@@ -553,11 +636,9 @@ function dzisiaj(){
   cal = {y: t.getFullYear(), m: t.getMonth(), sel: klucz(t)};
   renderKalendarz();
 }
-function wybierzDzien(k){
-  cal.sel = k;
-  renderKalendarz();
-}
+function wybierzDzien(k){ cal.sel = k; renderKalendarz(); }
 function renderKalendarz(){
+  if (!cal.sel) cal.sel = klucz(new Date());
   const pierwszy = new Date(cal.y, cal.m, 1);
   const przesun = (pierwszy.getDay() + 6) % 7;
   const ile = new Date(cal.y, cal.m + 1, 0).getDate();
@@ -583,7 +664,8 @@ function renderKalendarz(){
   const kursyOpcje = `<option value="">— brak —</option>` +
     [...SYSTEM, ...dane.kursy].map(k => `<option value="${k.id}">${esc(k.przedmiot)} · ${esc(k.temat)}</option>`).join("");
 
-  V(`<div class="row between" style="margin-bottom:18px">
+  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
+    <div class="row between" style="margin-bottom:18px">
       <h2>${MIESIACE[cal.m]} ${cal.y}</h2>
       <div class="row">
         <button class="btn small" onclick="zmienMiesiac(-1)">◀</button>
@@ -686,7 +768,7 @@ function renderStatystyki(){
   const postepKursow = [...SYSTEM, ...dane.kursy].map(k => `<div class="hrow"><span>${esc(k.temat)}</span>
     <div class="bar" style="--w:${proc(k)}%"><i></i></div><b>${proc(k)}%</b></div>`).join("");
 
-  V(`<h2>Statystyki</h2>
+  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `<h2>Statystyki</h2>
     <div class="stat-grid">
       <div class="card stat"><span class="muted">Odpowiedzi</span><b>${ile}</b></div>
       <div class="card stat"><span class="muted">Poprawnych</span><b>${procent}%</b></div>
@@ -727,6 +809,181 @@ function wyczyscHistorie(){
   renderHistoria();
 }
 
+// ===================== KALKULATOR =====================
+// Liczby zapisuje dokładnie jako ułamki (np. 3/4, 1 3/4), a funkcje liczy dziesiętnie.
+const gcd = (a, b) => b ? gcd(b, a % b) : Math.abs(a);
+function R(n, d = 1){
+  if (d === 0) throw new Error("dzielenie przez zero");
+  if (d < 0){ n = -n; d = -d; }
+  const g = gcd(n, d) || 1;
+  return {r: true, n: n / g, d: d / g};
+}
+function F(v){ return {r: false, v}; }
+const val = x => x.r ? x.n / x.d : x.v;
+function add(a, b){ return a.r && b.r ? R(a.n * b.d + b.n * a.d, a.d * b.d) : F(val(a) + val(b)); }
+function sub(a, b){ return a.r && b.r ? R(a.n * b.d - b.n * a.d, a.d * b.d) : F(val(a) - val(b)); }
+function mul(a, b){ return a.r && b.r ? R(a.n * b.n, a.d * b.d) : F(val(a) * val(b)); }
+function div(a, b){
+  if (val(b) === 0) throw new Error("dzielenie przez zero");
+  return a.r && b.r ? R(a.n * b.d, a.d * b.n) : F(val(a) / val(b));
+}
+function neg(a){ return a.r ? R(-a.n, a.d) : F(-a.v); }
+function pow(a, b){
+  if (a.r && b.r && b.d === 1){
+    const k = b.n;
+    if (k === 0) return R(1);
+    if (a.n === 0 && k < 0) throw new Error("dzielenie przez zero");
+    const n = Math.abs(k) === k ? a.n ** k : a.d ** (-k);
+    const d = Math.abs(k) === k ? a.d ** k : a.n ** (-k);
+    if (Number.isSafeInteger(n) && Number.isSafeInteger(d)) return R(n, d);
+  }
+  return F(Math.pow(val(a), val(b)));
+}
+function fn(nm, a){
+  const x = val(a);
+  if (nm === "abs") return a.r ? R(Math.abs(a.n), a.d) : F(Math.abs(a.v));
+  if (nm === "sqrt"){
+    if (x < 0) throw new Error("pierwiastek z liczby ujemnej");
+    if (a.r && Number.isInteger(Math.sqrt(a.n)) && Number.isInteger(Math.sqrt(a.d))) return R(Math.sqrt(a.n), Math.sqrt(a.d));
+    return F(Math.sqrt(x));
+  }
+  if (nm === "sin") return F(Math.sin(x * Math.PI / 180));   // kąty w stopniach
+  if (nm === "cos") return F(Math.cos(x * Math.PI / 180));
+  if (nm === "tan") return F(Math.tan(x * Math.PI / 180));
+  if (nm === "ln"){ if (x <= 0) throw new Error("logarytm z liczby ≤ 0"); return F(Math.log(x)); }
+  if (nm === "log"){ if (x <= 0) throw new Error("logarytm z liczby ≤ 0"); return F(Math.log10(x)); }
+  throw new Error("nieznana funkcja " + nm);
+}
+function decR(calk, ulam){
+  return ulam ? R(+(calk + ulam), 10 ** ulam.length) : R(+calk);
+}
+function tokeny(s){
+  const T = s.replace(/,/g, ".");
+  const out = []; let i = 0;
+  while (i < T.length){
+    const ch = T[i], r = T.slice(i);
+    if (ch === " "){ i++; continue; }
+    let m;
+    if ((m = r.match(/^(\d+) (\d+)\/(\d+)/))){            // mieszany: 1 3/4
+      out.push({k: "num", v: R(+m[1] * +m[3] + +m[2], +m[3])});
+      i += m[0].length; continue;
+    }
+    if ((m = r.match(/^(\d+)(?:\.(\d+))?(?:\/(\d+))?/))){ // liczba, dziesiętna albo ułamek 3/4
+      let v = decR(m[1], m[2]);
+      if (m[3] !== undefined) v = div(v, R(+m[3]));
+      out.push({k: "num", v});
+      i += m[0].length; continue;
+    }
+    if ((m = r.match(/^(sin|cos|tan|ln|log|sqrt|abs)/))){ out.push({k: "fn", v: m[1]}); i += m[1].length; continue; }
+    if ((m = r.match(/^(pi|π)/))){ out.push({k: "num", v: F(Math.PI)}); i += m[1].length; continue; }
+    if (ch === "e"){ out.push({k: "num", v: F(Math.E)}); i++; continue; }
+    if (ch === "×" || ch === "*"){ out.push({k: "op", v: "*"}); i++; continue; }
+    if (ch === "−" || ch === "-"){ out.push({k: "op", v: "-"}); i++; continue; }
+    if (ch === "÷" || ch === "/"){ out.push({k: "op", v: "÷"}); i++; continue; }
+    if ("+^()".includes(ch)){ out.push({k: "op", v: ch}); i++; continue; }
+    throw new Error(`nieznany znak „${ch}”`);
+  }
+  return out;
+}
+function parsuj(tok){
+  let p = 0;
+  const peek = () => tok[p];
+  const isOp = (v) => peek() && peek().k === "op" && (Array.isArray(v) ? v.includes(peek().v) : peek().v === v);
+  function expr(){
+    let a = term();
+    while (isOp(["+", "-"])){ const o = tok[p++].v; const b = term(); a = o === "+" ? add(a, b) : sub(a, b); }
+    return a;
+  }
+  function term(){
+    let a = unary();
+    while (isOp(["*", "÷"])){ const o = tok[p++].v; const b = unary(); a = o === "*" ? mul(a, b) : div(a, b); }
+    return a;
+  }
+  function unary(){
+    if (isOp("-")){ p++; return neg(unary()); }
+    return power();
+  }
+  function power(){
+    const a = prim();
+    if (isOp("^")){ p++; const b = unary(); return pow(a, b); }
+    return a;
+  }
+  function prim(){
+    const t = tok[p++];
+    if (!t) throw new Error("wyrażenie jest niepełne");
+    if (t.k === "num") return t.v;
+    if (t.k === "fn"){
+      if (!isOp("(")) throw new Error("po funkcji potrzebny nawias");
+      p++; const a = expr(); zamknij(); return fn(t.v, a);
+    }
+    if (t.k === "op" && t.v === "("){ const a = expr(); zamknij(); return a; }
+    throw new Error("nieoczekiwany znak");
+  }
+  function zamknij(){
+    if (!isOp(")")) throw new Error("brakuje nawiasu zamykającego");
+    p++;
+  }
+  const wynik = expr();
+  if (p < tok.length) throw new Error("nadmiar znaków w wyrażeniu");
+  return wynik;
+}
+function fmt(v){
+  if (!v.r){
+    if (!isFinite(v.v)) throw new Error("wynik nieokreślony");
+    return String(+v.v.toPrecision(10));
+  }
+  if (v.d === 1) return String(v.n);
+  if (dane.ustawienia.mieszane && Math.abs(v.n) > v.d){
+    const w = Math.trunc(v.n / v.d), r = Math.abs(v.n) % v.d;
+    return `${w} ${r}/${v.d}`;
+  }
+  return `${v.n}/${v.d}`;
+}
+const KEYS_S = [["7","7"],["8","8"],["9","9"],["÷","÷"],["4","4"],["5","5"],["6","6"],["×","×"],
+                ["1","1"],["2","2"],["3","3"],["−","−"],["0","0"],[".","."],["a/b","/"],["+","+"],
+                ["(","("],[")",")"],["⌫","⌫"],["C","C"]];
+const KEYS_N = [["sin","sin("],["cos","cos("],["tan","tan("],["ln","ln("],["log","log("],
+                ["√","sqrt("],["π","π"],["e","e"],["x²","^2"],["^","^"],["|x|","abs("],["x⁻¹","^-1"]];
+function kKeys(){ return dane.ustawienia.kalkTryb === "naukowy" ? [...KEYS_N, ...KEYS_S] : KEYS_S; }
+function kKey(i){
+  const k = kKeys()[i], inp = $("kIn");
+  if (k[1] === "⌫") inp.value = inp.value.slice(0, -1);
+  else if (k[1] === "C"){ inp.value = ""; $("kOut").innerHTML = ""; }
+  else inp.value += k[1];
+  inp.focus();
+}
+function kCalc(){
+  const s = $("kIn").value.trim();
+  if (!s) return;
+  try {
+    const v = parsuj(tokeny(s));
+    const przyb = v.r && v.d !== 1 ? `<div class="muted">≈ ${+(v.n / v.d).toFixed(6)}</div>` : "";
+    $("kOut").innerHTML = `<b>= ${esc(fmt(v))}</b>${przyb}`;
+  } catch(e){
+    $("kOut").innerHTML = `<span class="bad">Błąd: ${esc(e.message)}</span>`;
+  }
+}
+function ustawKalkTryb(t){ dane.ustawienia.kalkTryb = t; zapisz(); renderKalkulator(); }
+function renderKalkulator(){
+  const naukowy = dane.ustawienia.kalkTryb === "naukowy";
+  const przyciski = kKeys().map((k, i) => `<button class="btn kb" onclick="kKey(${i})">${esc(k[0])}</button>`).join("");
+  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
+    <div class="card pop"><h2>Kalkulator</h2>
+      <div class="row">
+        <button class="btn small ${!naukowy ? "sel" : ""}" onclick="ustawKalkTryb('prosty')">Prosty</button>
+        <button class="btn small ${naukowy ? "sel" : ""}" onclick="ustawKalkTryb('naukowy')">Naukowy</button>
+        <span class="muted">Ułamki wpisuj jako 3/4, mieszane jako 1 3/4. Funkcje liczą w stopniach.</span>
+      </div>
+      <label style="margin-top:14px">Działanie</label>
+      <input id="kIn" class="calc-disp" placeholder="np. 3/4 + 1/6" autocomplete="off"
+        onkeydown="if(event.key==='Enter')kCalc()">
+      <div id="kOut" class="calc-out"></div>
+      <div class="calc-grid">${przyciski}</div>
+      <button class="btn wide calc-eq" onclick="kCalc()">= Oblicz</button>
+    </div>`);
+  $("kIn").focus();
+}
+
 // ===================== HELP =====================
 const PROMPT_AI = `Jesteś nauczycielem przygotowującym zadania do aplikacji "Trening". Do wiadomości dołączam zdjęcia zadań z przedmiotu: [WPISZ PRZEDMIOT].
 
@@ -761,15 +1018,16 @@ function renderHelp(){
   <div class="card"><h3>Skróty i wskazówki</h3>
     <p>Enter w polu odpowiedzi sprawdza odpowiedź, a kolejny Enter przechodzi dalej.</p>
     <p>Podpowiedź kosztuje 5 pkt zamiast 10 za poprawną odpowiedź. Błędna odpowiedź zeruje serię.</p>
+    <p>Strzałka ← Wróć w nagłówku cofa Cię do poprzedniego ekranu, a Start prowadzi do listy kursów.</p>
     <p>Dane zapisują się w przeglądarce tego komputera. Zrób kopię zapasową w Ustawieniach, zanim wyczyścisz przeglądarkę.</p>
     <p>Zadania systemowe są gotowe do ćwiczenia i nie da się ich edytować ani usunąć.</p>
   </div>`);
 }
 function kopiujPrompt(){
   const box = $("promptBox");
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(PROMPT_AI).then(() => toast("Prompt skopiowany"), () => { box.select(); document.execCommand("copy"); toast("Prompt skopiowany"); });
-  } else { box.select(); document.execCommand("copy"); toast("Prompt skopiowany"); }
+  const awaryjnie = () => { box.select(); document.execCommand("copy"); toast("Prompt skopiowany"); };
+  if (navigator.clipboard) navigator.clipboard.writeText(PROMPT_AI).then(() => toast("Prompt skopiowany"), awaryjnie);
+  else awaryjnie();
 }
 
 // ===================== USTAWIENIA =====================
@@ -779,8 +1037,9 @@ function renderUstawienia(){
     <button class="btn ${u.motyw === k ? "sel" : ""}" onclick="ustawMotyw('${k}')">
       <span class="swatch" style="background:${sw}"></span>${n}</button>`).join("");
   const fonty = Object.keys(CZCIONKI).map(n => `
-    <button class="btn font-btn ${u.czcionka === n ? "sel" : ""}" style="font-family:${CZCIONKI[n]}" onclick="ustawCzcionke('${n}')">${n}</button>`).join("");
-  V(`<div class="card pop"><h2>Motyw kolorystyczny</h2>
+    <button class="btn ${u.czcionka === n ? "sel" : ""}" style="font-family:${CZCIONKI[n]}" onclick="ustawCzcionke('${n}')">${n}</button>`).join("");
+  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
+    <div class="card pop"><h2>Motyw kolorystyczny</h2>
       <div class="motyw-btns">${motywy}</div></div>
     <div class="card"><h2>Czcionka</h2>
       <div class="row">${fonty}</div></div>
@@ -790,6 +1049,12 @@ function renderUstawienia(){
       <div class="row" style="margin-top:14px">
         <button class="btn ${u.anim ? "sel" : ""}" onclick="przelaczAnim()">Animacje: ${u.anim ? "włączone" : "wyłączone"}</button>
       </div></div>
+    <div class="card"><h2>Kalkulator</h2>
+      <div class="row">
+        <button class="btn ${u.kalk ? "sel" : ""}" onclick="przelaczKalk()">Kalkulator: ${u.kalk ? "włączony" : "wyłączony"}</button>
+        <button class="btn ${u.mieszane ? "sel" : ""}" onclick="przelaczMieszane()">Ułamki mieszane: ${u.mieszane ? "tak" : "nie"}</button>
+      </div>
+      <p class="muted">Po włączeniu kalkulator pojawi się w menu. Prosty i naukowy tryb wybierasz na jego ekranie.</p></div>
     <div class="card"><h2>Kopia zapasowa</h2>
       <p class="muted">Zapisz wszystkie kursy, wydarzenia i historię do pliku, albo wczytaj wcześniejszą kopię.</p>
       <div class="row">
@@ -803,6 +1068,13 @@ function ustawMotyw(k){ dane.ustawienia.motyw = k; zapisz(); applyUstawienia(); 
 function ustawCzcionke(n){ dane.ustawienia.czcionka = n; zapisz(); applyUstawienia(); renderUstawienia(); }
 function ustawRozmiar(v){ dane.ustawienia.rozmiar = +v; zapisz(); applyUstawienia(); }
 function przelaczAnim(){ dane.ustawienia.anim = !dane.ustawienia.anim; zapisz(); applyUstawienia(); renderUstawienia(); }
+function przelaczKalk(){
+  dane.ustawienia.kalk = !dane.ustawienia.kalk;
+  zapisz();
+  if (!dane.ustawienia.kalk && biezacy.w === "kalkulator") start();
+  else renderUstawienia();
+}
+function przelaczMieszane(){ dane.ustawienia.mieszane = !dane.ustawienia.mieszane; zapisz(); renderUstawienia(); }
 
 function eksport(){
   const blob = new Blob([JSON.stringify(dane, null, 2)], {type: "application/json"});
@@ -824,7 +1096,7 @@ function importuj(input){
       zapisz();
       applyUstawienia();
       toast("Kopia wczytana");
-      go("kursy");
+      start();
     } catch(e){ alert("Nie udało się wczytać pliku: " + e.message); }
   };
   r.readAsText(plik);
@@ -834,7 +1106,7 @@ function resetuj(){
   dane = domyslne();
   zapisz();
   applyUstawienia();
-  go("kursy");
+  start();
 }
 
 // ===================== START =====================
