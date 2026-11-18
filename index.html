@@ -91,6 +91,7 @@ label{font-weight:700;display:block}
 .hint{background:rgba(255,200,60,.22);border-left:8px solid #f5b800;padding:14px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
 .expl{background:rgba(76,160,240,.15);border-left:8px solid var(--accent2);padding:16px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
 .result{margin-top:14px;font-size:1.15em}
+.result .row{margin-top:10px}
 
 /* ===== KALENDARZ ===== */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
@@ -122,11 +123,20 @@ label{font-weight:700;display:block}
 .hrow span:first-child{width:200px;flex-shrink:0}
 .hrow .bar{flex:1;margin:0}
 
+/* ===== OSIĄGNIĘCIA ===== */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.ach{padding:20px}
+.ach.locked{opacity:.45;filter:grayscale(.7)}
+.stars{color:#f5b800;letter-spacing:2px;font-size:1.15em}
+.ach-pop{position:fixed;top:24px;right:24px;z-index:1000;min-width:280px;max-width:90vw;background:var(--panel);border:2px solid var(--accent);border-radius:14px;padding:14px 18px;box-shadow:0 12px 34px rgba(0,0,0,.3);animation:pop .4s both;color:var(--text)}
+.ach-pop.out{opacity:0;transition:opacity .4s}
+
 /* ===== KALKULATOR ===== */
 .calc-disp{font-size:1.6em;font-family:Consolas,'Courier New',monospace;text-align:right}
 .calc-out{min-height:60px;font-size:1.4em;padding:12px 4px;text-align:right}
 .calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:14px}
 .calc-eq{width:100%;margin-top:12px}
+.kalk-wrap{margin-top:16px;padding:16px;border:2px dashed var(--line);border-radius:14px}
 
 /* ===== USTAWIENIA ===== */
 .motyw-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -308,12 +318,41 @@ const SYSTEM = [
   ]}
 ];
 
+// ===================== OSIĄGNIĘCIA =====================
+// s = bieżące statystyki, warunek(s) zwraca true, gdy osiągnięcie jest zdobyte
+const OSIAGNIECIA = [
+  {id:"o01", nazwa:"Pierwszy kurs", opis:"Stwórz swój pierwszy kurs.", stars:1, warunek: s => s.kursy >= 1},
+  {id:"o02", nazwa:"Pierwsze kroki", opis:"Poprawnie rozwiąż 10 zadań.", stars:1, warunek: s => s.poprawne >= 10},
+  {id:"o03", nazwa:"Rozgrzewka", opis:"Zdobądź serię 5 poprawnych odpowiedzi z rzędu.", stars:1, warunek: s => s.seria >= 5},
+  {id:"o04", nazwa:"Na fali", opis:"Zdobądź serię 10 poprawnych odpowiedzi z rzędu.", stars:2, warunek: s => s.seria >= 10},
+  {id:"o05", nazwa:"Nie do zatrzymania", opis:"Zdobądź serię 20 poprawnych odpowiedzi z rzędu.", stars:3, warunek: s => s.seria >= 20},
+  {id:"o06", nazwa:"Matematyk systemowy", opis:"Rozwiąż poprawnie wszystkie zadania systemowe z matematyki.", stars:2, warunek: s => s.sysDone("sys-mat")},
+  {id:"o07", nazwa:"Anglista z memów", opis:"Rozwiąż poprawnie wszystkie zadania systemowe z angielskiego.", stars:2, warunek: s => s.sysDone("sys-ang")},
+  {id:"o08", nazwa:"Polonista z osiedla", opis:"Rozwiąż poprawnie wszystkie zadania systemowe z polskiego.", stars:2, warunek: s => s.sysDone("sys-pol")},
+  {id:"o09", nazwa:"Pythonista", opis:"Rozwiąż poprawnie wszystkie zadania systemowe z informatyki.", stars:2, warunek: s => s.sysDone("sys-inf")},
+  {id:"o10", nazwa:"Wszechstronny", opis:"Ukończ wszystkie cztery zestawy systemowe.", stars:3, warunek: s => s.sysDone("sys-mat") && s.sysDone("sys-ang") && s.sysDone("sys-pol") && s.sysDone("sys-inf")},
+  {id:"o11", nazwa:"Kolekcjoner kursów", opis:"Stwórz 3 własne kursy.", stars:2, warunek: s => s.kursy >= 3},
+  {id:"o12", nazwa:"Pełny kurs", opis:"Opanuj w 100% dowolny własny kurs.", stars:2, warunek: s => s.pelnyKurs},
+  {id:"o13", nazwa:"Autor treści", opis:"Dodaj pierwsze zadania do kursu z załącznikiem.", stars:1, warunek: s => s.dodane >= 1},
+  {id:"o14", nazwa:"Pół setki", opis:"Poprawnie rozwiąż 50 zadań.", stars:2, warunek: s => s.poprawne >= 50},
+  {id:"o15", nazwa:"Setka", opis:"Poprawnie rozwiąż 100 zadań.", stars:3, warunek: s => s.poprawne >= 100},
+  {id:"o16", nazwa:"Bez ściągania", opis:"Rozwiąż poprawnie 10 zadań bez użycia podpowiedzi.", stars:2, warunek: s => s.bezPodp >= 10},
+  {id:"o17", nazwa:"Ciekawski", opis:"Otwórz 10 wyjaśnień.", stars:1, warunek: s => s.wyjas >= 10},
+  {id:"o18", nazwa:"Liczykrupa", opis:"Użyj kalkulatora podczas zadania.", stars:1, warunek: s => s.kalk >= 1},
+  {id:"o19", nazwa:"Nie poddawaj się", opis:"Spróbuj ponownie 5 razy po błędnej odpowiedzi.", stars:2, warunek: s => s.ponow >= 5},
+  {id:"o20", nazwa:"Plan dnia", opis:"Dodaj 5 wydarzeń do kalendarza.", stars:2, warunek: s => s.wydarzenia >= 5}
+];
+const TRUDNOSC = ["", "łatwe", "średnie", "trudne"];
+function gwiazdki(n){ return "★".repeat(n) + "☆".repeat(3 - n); }
+
 // ===================== STAN =====================
 function domyslne(){
   return {
     ustawienia: {motyw:"firmowy", czcionka:"Segoe UI", rozmiar:17, anim:true, kalk:false, kalkTryb:"prosty", mieszane:false},
     kursy: [], historia: [], wydarzenia: [],
-    punkty: 0, seria: 0, maxSeria: 0, sysOk: {}
+    punkty: 0, seria: 0, maxSeria: 0, sysOk: {},
+    stat: {poprawne:0, bezPodp:0, wyjas:0, kalk:0, ponow:0, dodane:0},
+    osiagniete: {}
   };
 }
 function wczytaj(){
@@ -323,19 +362,24 @@ function wczytaj(){
     if (s){
       const u = {...d.ustawienia, ...(s.ustawienia || {})};
       if (!MOTYWY.some(m => m[0] === u.motyw)) u.motyw = "firmowy";
-      return {...d, ...s, ustawienia: u};
+      return {...d, ...s, ustawienia: u, stat: {...d.stat, ...(s.stat || {})}, osiagniete: s.osiagniete || {}};
     }
   } catch(e){}
   return d;
 }
 let dane = wczytaj();
-let odpowiedziono = false, uzytaPodpowiedz = false, aktualne = {id:null, i:0};
+let odpowiedziono = false, uzytaPodpowiedz = false, wyjOtwarte = false, aktualne = {id:null, i:0};
 let cal = {y: new Date().getFullYear(), m: new Date().getMonth(), sel: null};
 let stos = [], biezacy = {w:"kursy", a:null, b:null};
+let kolejkaOsiagniec = [], pokazujeSie = false;
 
 // ===================== POMOCNICZE =====================
 const $ = id => document.getElementById(id);
-function zapisz(){ localStorage.setItem(KLUCZ, JSON.stringify(dane)); odswiezPasek(); }
+function zapisz(){
+  sprawdzOsiagniecia();
+  localStorage.setItem(KLUCZ, JSON.stringify(dane));
+  odswiezPasek();
+}
 function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function ikona(n, cls=""){ return `<img class="ico ${cls}" src="${n}.${IKONA_EXT}" alt="" onerror="this.style.display='none'">`; }
 function V(h){ $("view").innerHTML = h; }
@@ -381,6 +425,53 @@ function applyUstawienia(){
   document.body.classList.toggle("noanim", !u.anim);
 }
 
+// ===================== OSIĄGNIĘCIA: LOGIKA =====================
+function sysDone(id){
+  const k = SYSTEM.find(x => x.id === id);
+  return !!k && (dane.sysOk[id] || []).length === k.zadania.length;
+}
+function statystyki(){
+  return {
+    kursy: dane.kursy.length,
+    poprawne: dane.stat.poprawne,
+    seria: dane.maxSeria,
+    bezPodp: dane.stat.bezPodp,
+    wyjas: dane.stat.wyjas,
+    kalk: dane.stat.kalk,
+    ponow: dane.stat.ponow,
+    dodane: dane.stat.dodane,
+    wydarzenia: dane.wydarzenia.length,
+    pelnyKurs: dane.kursy.some(k => k.zadania.length && czyOk(k).length === k.zadania.length),
+    sysDone
+  };
+}
+function sprawdzOsiagniecia(){
+  const s = statystyki();
+  OSIAGNIECIA.forEach(a => {
+    if (!dane.osiagniete[a.id] && a.warunek(s)){
+      dane.osiagniete[a.id] = new Date().toLocaleDateString("pl-PL");
+      kolejkaOsiagniec.push(a);
+    }
+  });
+  if (kolejkaOsiagniec.length && !pokazujeSie) pokazNastepne();
+}
+function pokazNastepne(){
+  if (!kolejkaOsiagniec.length){ pokazujeSie = false; return; }
+  pokazujeSie = true;
+  const a = kolejkaOsiagniec.shift();
+  const el = document.createElement("div");
+  el.className = "ach-pop";
+  el.innerHTML = `<b>Osiągnięcie odblokowane!</b>
+    <div style="font-size:1.15em;margin:4px 0">${esc(a.nazwa)} <span class="stars">${gwiazdki(a.stars)}</span></div>
+    <div class="muted">${esc(a.opis)}</div>`;
+  document.body.appendChild(el);
+  if (dane.ustawienia.anim) konfetti();
+  setTimeout(() => {
+    el.classList.add("out");
+    setTimeout(() => { el.remove(); pokazNastepne(); }, 400);
+  }, 3400);
+}
+
 // ===================== LOGOWANIE I NAWIGACJA =====================
 function zaloguj(){
   if ($("pass").value === HASLO){
@@ -399,6 +490,7 @@ const MAPA = {
   kurs: a => renderKurs(a), dodaj: a => renderDodaj(a),
   rozwiazuj: (a, b) => renderRozwiazuj(a, b || 0),
   kalendarz: () => renderKalendarz(), statystyki: () => renderStatystyki(),
+  osiagniecia: () => renderOsiagniecia(),
   historia: () => renderHistoria(), help: () => renderHelp(),
   kalkulator: () => renderKalkulator(), ustawienia: () => renderUstawienia()
 };
@@ -409,8 +501,8 @@ function pokaz(){
   MAPA[biezacy.w](biezacy.a, biezacy.b);
   window.scrollTo({top: 0, behavior: "smooth"});
 }
-function go(w, a, b){ stos.push(biezacy); biezacy = {w, a, b}; pokaz(); }      // wejście w nowy ekran
-function przejdz(w, a, b){ biezacy = {w, a, b}; pokaz(); }                    // zmiana bez cofania
+function go(w, a, b){ stos.push(biezacy); biezacy = {w, a, b}; pokaz(); }
+function przejdz(w, a, b){ biezacy = {w, a, b}; pokaz(); }
 function wstecz(){ biezacy = stos.pop() || {w:"kursy", a:null, b:null}; pokaz(); }
 function start(){ stos = []; biezacy = {w:"kursy", a:null, b:null}; pokaz(); }
 
@@ -418,7 +510,7 @@ function start(){ stos = []; biezacy = {w:"kursy", a:null, b:null}; pokaz(); }
 function navHTML(){
   const pozycje = [
     ["kalendarz","Kalendarz","calendar"], ["statystyki","Statystyki","stats"],
-    ["historia","Historia","history"], ["help","Help","help"]
+    ["osiagniecia","Osiągnięcia","stats"], ["historia","Historia","history"], ["help","Help","help"]
   ];
   if (dane.ustawienia.kalk) pozycje.push(["kalkulator","Kalkulator","calc"]);
   pozycje.push(["ustawienia","Ustawienia","settings"]);
@@ -523,6 +615,7 @@ function zapiszZadania(id){
     tresc: z.tresc, odpowiedz: String(z.odpowiedz),
     podpowiedz: z.podpowiedz || "", wyjasnienie: z.wyjasnienie || ""
   })));
+  dane.stat.dodane += nowe.length;
   zapisz();
   konfetti();
   toast(`Dodano ${nowe.length} zadań`);
@@ -546,7 +639,7 @@ function renderRozwiazuj(id, i){
     konfetti();
     return;
   }
-  odpowiedziono = false; uzytaPodpowiedz = false;
+  odpowiedziono = false; uzytaPodpowiedz = false; wyjOtwarte = false;
   aktualne = {id, i};
   const p = Math.round(i / k.zadania.length * 100);
   V(`<div class="card pop" id="karta">
@@ -563,7 +656,9 @@ function renderRozwiazuj(id, i){
       <button class="btn" style="background:linear-gradient(135deg,#ffd166,#f4a261);color:#3b1f05" onclick="pokazPodpowiedz()">${ikona("hint")}Podpowiedź (−5 pkt)</button>
       <button class="btn" onclick="pokazWyjasnienie()">${ikona("explain")}Wyjaśnienie</button>
       <button class="btn ghost" onclick="przejdz('rozwiazuj','${id}',${i + 1})">${ikona("next")}Następne</button>
+      ${dane.ustawienia.kalk ? `<button class="btn" onclick="pokazKalk()">Kalkulator</button>` : ""}
     </div>
+    ${dane.ustawienia.kalk ? `<div id="kalkBox" class="kalk-wrap hidden">${kalkPanel()}</div>` : ""}
     <div id="podp"></div>
     <div id="wynik" class="result"></div>
     <div id="wyj"></div>
@@ -575,6 +670,11 @@ function klawisz(e, id, i){
   if (odpowiedziono) przejdz("rozwiazuj", id, i + 1);
   else sprawdzOdp(id, i);
 }
+function pokazKalk(){
+  const el = $("kalkBox");
+  el.classList.toggle("hidden");
+  if (!el.classList.contains("hidden")){ dane.stat.kalk++; zapisz(); }
+}
 function pokazPodpowiedz(){
   const k = kurs(aktualne.id), z = k && k.zadania[aktualne.i];
   if (!z) return;
@@ -585,6 +685,7 @@ function pokazPodpowiedz(){
 function pokazWyjasnienie(){
   const k = kurs(aktualne.id), z = k && k.zadania[aktualne.i];
   if (!z) return;
+  if (!wyjOtwarte){ wyjOtwarte = true; dane.stat.wyjas++; zapisz(); }
   $("wyj").innerHTML = `<div class="expl pop">${esc(z.wyjasnienie || "Brak wyjaśnienia.")}</div>`;
 }
 function sprawdzOdp(id, i){
@@ -595,12 +696,15 @@ function sprawdzOdp(id, i){
   odpowiedziono = true;
   const dozwolone = String(z.odpowiedz).split("|").map(s => s.trim().toLowerCase());
   const dobra = dozwolone.includes(podana.toLowerCase());
-  const pkt = dobra ? (uzytaPodpowiedz ? 5 : 10) : 0;
+  const bylo = czyOk(k).includes(i);
+  const pkt = (dobra && !bylo) ? (uzytaPodpowiedz ? 5 : 10) : 0;
 
   if (dobra){
     dane.punkty += pkt;
     dane.seria += 1;
     dane.maxSeria = Math.max(dane.maxSeria, dane.seria);
+    dane.stat.poprawne += 1;
+    if (!uzytaPodpowiedz) dane.stat.bezPodp += 1;
     dodajOk(k, i);
   } else {
     dane.seria = 0;
@@ -616,12 +720,22 @@ function sprawdzOdp(id, i){
 
   $("odp").disabled = true;
   $("btnOdp").disabled = true;
-  $("wynik").innerHTML = dobra
-    ? `<span class="ok">Dobrze! +${pkt} pkt</span>`
-    : `<span class="bad">Nie tym razem.</span> Poprawna odpowiedź: <b>${esc(dozwolone[0])}</b>`;
-  const karta = $("karta");
-  if (dobra) konfetti();
-  else { karta.classList.add("shake"); setTimeout(() => karta.classList.remove("shake"), 500); }
+  let html;
+  if (dobra){
+    html = `<span class="ok">Dobrze! ${pkt ? "+" + pkt + " pkt" : "Zadanie było już zaliczone, bez punktów."}</span>`;
+    konfetti();
+  } else {
+    html = `<span class="bad">Nie tym razem.</span> Poprawna odpowiedź: <b>${esc(dozwolone[0])}</b>
+      <div class="row"><button class="btn small" onclick="ponow('${id}',${i})">Spróbuj ponownie</button></div>`;
+    const karta = $("karta");
+    karta.classList.add("shake"); setTimeout(() => karta.classList.remove("shake"), 500);
+  }
+  $("wynik").innerHTML = html;
+}
+function ponow(id, i){
+  dane.stat.ponow += 1;
+  zapisz();
+  przejdz("rozwiazuj", id, i);
 }
 
 // ===================== KALENDARZ =====================
@@ -664,7 +778,7 @@ function renderKalendarz(){
   const kursyOpcje = `<option value="">— brak —</option>` +
     [...SYSTEM, ...dane.kursy].map(k => `<option value="${k.id}">${esc(k.przedmiot)} · ${esc(k.temat)}</option>`).join("");
 
-  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
+  V(navHTML() + `
     <div class="row between" style="margin-bottom:18px">
       <h2>${MIESIACE[cal.m]} ${cal.y}</h2>
       <div class="row">
@@ -768,7 +882,7 @@ function renderStatystyki(){
   const postepKursow = [...SYSTEM, ...dane.kursy].map(k => `<div class="hrow"><span>${esc(k.temat)}</span>
     <div class="bar" style="--w:${proc(k)}%"><i></i></div><b>${proc(k)}%</b></div>`).join("");
 
-  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `<h2>Statystyki</h2>
+  V(navHTML() + `<h2>Statystyki</h2>
     <div class="stat-grid">
       <div class="card stat"><span class="muted">Odpowiedzi</span><b>${ile}</b></div>
       <div class="card stat"><span class="muted">Poprawnych</span><b>${procent}%</b></div>
@@ -787,10 +901,29 @@ function renderStatystyki(){
     </div>`);
 }
 
+// ===================== OSIĄGNIĘCIA: EKRAN =====================
+function renderOsiagniecia(){
+  const ile = Object.keys(dane.osiagniete).length;
+  const s = statystyki();
+  const karty = OSIAGNIECIA.map(a => {
+    const zdobyte = !!dane.osiagniete[a.id];
+    return `<div class="card ach ${zdobyte ? "" : "locked"}">
+      <div class="row between"><h3>${esc(a.nazwa)}</h3><span class="stars">${gwiazdki(a.stars)}</span></div>
+      <p style="margin:8px 0">${esc(a.opis)}</p>
+      <div class="muted">Trudność: ${TRUDNOSC[a.stars]}</div>
+      <div class="muted" style="margin-top:8px">${zdobyte ? "Zdobyte: " + esc(dane.osiagniete[a.id]) : "Zablokowane"}</div>
+    </div>`;
+  }).join("");
+  V(navHTML() + `<div class="row between"><h2>Osiągnięcia</h2>
+      <span class="chip">Zdobyte: <b>${ile}</b> / ${OSIAGNIECIA.length}</span></div>
+    <div class="bar" style="--w:${Math.round(ile / OSIAGNIECIA.length * 100)}%"><i></i></div>
+    <div class="ach-grid" style="margin-top:14px">${karty}</div>`);
+}
+
 // ===================== HISTORIA =====================
 function renderHistoria(){
   const ile = dane.historia.length;
-  let h = `<div class="row between"><h2>Historia</h2>
+  let h = navHTML() + `<div class="row between"><h2>Historia</h2>
     <button class="btn small ghost" onclick="wyczyscHistorie()">Wyczyść</button></div>`;
   if (!ile) h += `<div class="card"><p class="muted">Brak historii. Rozwiąż pierwsze zadanie.</p></div>`;
   dane.historia.forEach(x => {
@@ -847,7 +980,7 @@ function fn(nm, a){
     if (a.r && Number.isInteger(Math.sqrt(a.n)) && Number.isInteger(Math.sqrt(a.d))) return R(Math.sqrt(a.n), Math.sqrt(a.d));
     return F(Math.sqrt(x));
   }
-  if (nm === "sin") return F(Math.sin(x * Math.PI / 180));   // kąty w stopniach
+  if (nm === "sin") return F(Math.sin(x * Math.PI / 180));
   if (nm === "cos") return F(Math.cos(x * Math.PI / 180));
   if (nm === "tan") return F(Math.tan(x * Math.PI / 180));
   if (nm === "ln"){ if (x <= 0) throw new Error("logarytm z liczby ≤ 0"); return F(Math.log(x)); }
@@ -864,11 +997,11 @@ function tokeny(s){
     const ch = T[i], r = T.slice(i);
     if (ch === " "){ i++; continue; }
     let m;
-    if ((m = r.match(/^(\d+) (\d+)\/(\d+)/))){            // mieszany: 1 3/4
+    if ((m = r.match(/^(\d+) (\d+)\/(\d+)/))){
       out.push({k: "num", v: R(+m[1] * +m[3] + +m[2], +m[3])});
       i += m[0].length; continue;
     }
-    if ((m = r.match(/^(\d+)(?:\.(\d+))?(?:\/(\d+))?/))){ // liczba, dziesiętna albo ułamek 3/4
+    if ((m = r.match(/^(\d+)(?:\.(\d+))?(?:\/(\d+))?/))){
       let v = decR(m[1], m[2]);
       if (m[3] !== undefined) v = div(v, R(+m[3]));
       out.push({k: "num", v});
@@ -963,24 +1096,31 @@ function kCalc(){
     $("kOut").innerHTML = `<span class="bad">Błąd: ${esc(e.message)}</span>`;
   }
 }
-function ustawKalkTryb(t){ dane.ustawienia.kalkTryb = t; zapisz(); renderKalkulator(); }
-function renderKalkulator(){
+function kalkPanel(){
   const naukowy = dane.ustawienia.kalkTryb === "naukowy";
   const przyciski = kKeys().map((k, i) => `<button class="btn kb" onclick="kKey(${i})">${esc(k[0])}</button>`).join("");
-  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
-    <div class="card pop"><h2>Kalkulator</h2>
-      <div class="row">
-        <button class="btn small ${!naukowy ? "sel" : ""}" onclick="ustawKalkTryb('prosty')">Prosty</button>
-        <button class="btn small ${naukowy ? "sel" : ""}" onclick="ustawKalkTryb('naukowy')">Naukowy</button>
-        <span class="muted">Ułamki wpisuj jako 3/4, mieszane jako 1 3/4. Funkcje liczą w stopniach.</span>
-      </div>
-      <label style="margin-top:14px">Działanie</label>
-      <input id="kIn" class="calc-disp" placeholder="np. 3/4 + 1/6" autocomplete="off"
-        onkeydown="if(event.key==='Enter')kCalc()">
-      <div id="kOut" class="calc-out"></div>
-      <div class="calc-grid">${przyciski}</div>
-      <button class="btn wide calc-eq" onclick="kCalc()">= Oblicz</button>
-    </div>`);
+  return `<div id="kalkInner">
+    <div class="row">
+      <button class="btn small ${!naukowy ? "sel" : ""}" onclick="ustawKalkTryb('prosty')">Prosty</button>
+      <button class="btn small ${naukowy ? "sel" : ""}" onclick="ustawKalkTryb('naukowy')">Naukowy</button>
+      <span class="muted">Ułamki: 3/4, mieszane: 1 3/4. Funkcje liczą w stopniach.</span>
+    </div>
+    <input id="kIn" class="calc-disp" placeholder="np. 3/4 + 1/6" autocomplete="off"
+      onkeydown="if(event.key==='Enter')kCalc()">
+    <div id="kOut" class="calc-out"></div>
+    <div class="calc-grid">${przyciski}</div>
+    <button class="btn wide calc-eq" onclick="kCalc()">= Oblicz</button>
+  </div>`;
+}
+function ustawKalkTryb(t){
+  dane.ustawienia.kalkTryb = t;
+  zapisz();
+  const el = $("kalkInner");
+  if (el){ el.outerHTML = kalkPanel(); $("kIn").focus(); }
+  else renderKalkulator();
+}
+function renderKalkulator(){
+  V(navHTML() + `<div class="card pop"><h2>Kalkulator</h2>${kalkPanel()}</div>`);
   $("kIn").focus();
 }
 
@@ -1004,7 +1144,7 @@ Zasady:
 - Każdy element musi mieć pola "tresc" i "odpowiedz".`;
 
 function renderHelp(){
-  V(`<div class="card pop"><h2>Help: jak przygotować zadania z załączników</h2>
+  V(navHTML() + `<div class="card pop"><h2>Help: jak przygotować zadania z załączników</h2>
     <ol style="line-height:1.8">
       <li>Zrób zdjęcia zadań (ostre, dobrze oświetlone, każde zadanie dobrze widoczne).</li>
       <li>Otwórz AI (np. Claude), wklej poniższy prompt, zmień przedmiot i dołącz zdjęcia.</li>
@@ -1018,6 +1158,7 @@ function renderHelp(){
   <div class="card"><h3>Skróty i wskazówki</h3>
     <p>Enter w polu odpowiedzi sprawdza odpowiedź, a kolejny Enter przechodzi dalej.</p>
     <p>Podpowiedź kosztuje 5 pkt zamiast 10 za poprawną odpowiedź. Błędna odpowiedź zeruje serię.</p>
+    <p>Po błędnej odpowiedzi kliknij <b>Spróbuj ponownie</b>. Punkty dostajesz tylko za pierwsze poprawne rozwiązanie zadania.</p>
     <p>Strzałka ← Wróć w nagłówku cofa Cię do poprzedniego ekranu, a Start prowadzi do listy kursów.</p>
     <p>Dane zapisują się w przeglądarce tego komputera. Zrób kopię zapasową w Ustawieniach, zanim wyczyścisz przeglądarkę.</p>
     <p>Zadania systemowe są gotowe do ćwiczenia i nie da się ich edytować ani usunąć.</p>
@@ -1038,7 +1179,7 @@ function renderUstawienia(){
       <span class="swatch" style="background:${sw}"></span>${n}</button>`).join("");
   const fonty = Object.keys(CZCIONKI).map(n => `
     <button class="btn ${u.czcionka === n ? "sel" : ""}" style="font-family:${CZCIONKI[n]}" onclick="ustawCzcionke('${n}')">${n}</button>`).join("");
-  V(navHTML().replace(/<nav class="nav">[\s\S]*<\/nav>/, "") + `
+  V(navHTML() + `
     <div class="card pop"><h2>Motyw kolorystyczny</h2>
       <div class="motyw-btns">${motywy}</div></div>
     <div class="card"><h2>Czcionka</h2>
@@ -1054,9 +1195,9 @@ function renderUstawienia(){
         <button class="btn ${u.kalk ? "sel" : ""}" onclick="przelaczKalk()">Kalkulator: ${u.kalk ? "włączony" : "wyłączony"}</button>
         <button class="btn ${u.mieszane ? "sel" : ""}" onclick="przelaczMieszane()">Ułamki mieszane: ${u.mieszane ? "tak" : "nie"}</button>
       </div>
-      <p class="muted">Po włączeniu kalkulator pojawi się w menu. Prosty i naukowy tryb wybierasz na jego ekranie.</p></div>
+      <p class="muted">Gdy kalkulator jest włączony, pojawia się w menu oraz jako przycisk pod zadaniem, który pokazuje lub chowa panel.</p></div>
     <div class="card"><h2>Kopia zapasowa</h2>
-      <p class="muted">Zapisz wszystkie kursy, wydarzenia i historię do pliku, albo wczytaj wcześniejszą kopię.</p>
+      <p class="muted">Zapisz wszystkie kursy, wydarzenia, historię i osiągnięcia do pliku, albo wczytaj wcześniejszą kopię.</p>
       <div class="row">
         <button class="btn" onclick="eksport()">Eksportuj do pliku</button>
         <label class="btn ghost" style="margin:0;cursor:pointer">Importuj z pliku
@@ -1092,7 +1233,7 @@ function importuj(input){
       const nowe = JSON.parse(r.result);
       if (!Array.isArray(nowe.kursy)) throw new Error("brak listy kursów");
       const d = domyslne();
-      dane = {...d, ...nowe, ustawienia: {...d.ustawienia, ...(nowe.ustawienia || {})}};
+      dane = {...d, ...nowe, ustawienia: {...d.ustawienia, ...(nowe.ustawienia || {})}, stat: {...d.stat, ...(nowe.stat || {})}, osiagniete: nowe.osiagniete || {}};
       zapisz();
       applyUstawienia();
       toast("Kopia wczytana");
@@ -1102,7 +1243,7 @@ function importuj(input){
   r.readAsText(plik);
 }
 function resetuj(){
-  if (!confirm("Na pewno skasować wszystkie kursy, wydarzenia i historię?")) return;
+  if (!confirm("Na pewno skasować wszystkie kursy, wydarzenia, historię i osiągnięcia?")) return;
   dane = domyslne();
   zapisz();
   applyUstawienia();
@@ -1112,6 +1253,7 @@ function resetuj(){
 // ===================== START =====================
 applyUstawienia();
 odswiezPasek();
+zapisz();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 </script>
 </body>
