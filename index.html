@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trening</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a246a">
+<link rel="icon" href="icon-192.png">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);background:var(--bg) fixed;font-family:var(--font,Tahoma,sans-serif);font-size:17px;transition:background .4s,color .4s}
+body.noanim *,body.noanim *::before,body.noanim *::after{animation:none!important;transition:none!important}
+
+/* ===== MOTYWY ===== */
+body[data-motyw=kolorowy]{--bg:linear-gradient(135deg,#fff3a0 0%,#b8f2d6 45%,#a8e6ff 100%);--panel:rgba(255,255,255,.86);--line:#f72585;--accent:#7209b7;--accent2:#4cc9f0;--text:#2a1450;--muted:#6b5a8a;--btn:linear-gradient(135deg,#ffd93d,#9fe2bf);--btnTxt:#2a1450;--btnSh:#7209b7}
+body[data-motyw=mono]{--bg:#0c0c0c;--panel:#1a1a1a;--line:#ffffff;--accent:#ffffff;--accent2:#9a9a9a;--text:#f2f2f2;--muted:#a0a0a0;--btn:#ffffff;--btnTxt:#000;--btnSh:#7a7a7a}
+body[data-motyw=czerwony]{--bg:linear-gradient(160deg,#1a0004,#6b0012 60%,#2b0006);--panel:rgba(35,0,6,.85);--line:#ff3b4e;--accent:#ff3b4e;--accent2:#ffb3bb;--text:#ffe9ec;--muted:#ffb3bb;--btn:linear-gradient(135deg,#ff3b4e,#b0001e);--btnTxt:#fff;--btnSh:#5c000c}
+body[data-motyw=zielony]{--bg:linear-gradient(160deg,#03230f,#0f5132 60%,#03170b);--panel:rgba(4,30,16,.85);--line:#3ddc84;--accent:#3ddc84;--accent2:#b9f5d0;--text:#e8fff3;--muted:#a6e8c3;--btn:linear-gradient(135deg,#3ddc84,#1f9d55);--btnTxt:#04170c;--btnSh:#0c5a30}
+body[data-motyw=niebieski]{--bg:linear-gradient(160deg,#03174a,#1e5bc6 60%,#041b52);--panel:rgba(6,24,70,.85);--line:#5ec8ff;--accent:#5ec8ff;--accent2:#a8e6ff;--text:#eaf4ff;--muted:#a8cfff;--btn:linear-gradient(135deg,#5ec8ff,#2a74e8);--btnTxt:#021233;--btnSh:#143b86}
+body[data-motyw=xp]{--bg:linear-gradient(180deg,#0a246a,#3a6ea5);--panel:#d4d0c8;--line:#0a246a;--accent:#0a246a;--accent2:#3a6ea5;--text:#000;--muted:#444;--btn:linear-gradient(#f4f3ee,#d6d0c5);--btnTxt:#000;--btnSh:#808080}
+body[data-motyw=xp] .card{border-radius:6px 6px 2px 2px}
+body[data-motyw=xp] .btn{border-radius:3px}
+
+/* ===== ELEMENTY ===== */
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:.93em}
+.bad{color:#e63946;font-weight:800}
+.ok{color:#14906e;font-weight:800}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+.ico{width:26px;height:26px;object-fit:contain;vertical-align:middle}
+.ico.big{width:64px;height:64px}
+.brand-t{font-size:2.2em;font-weight:900;letter-spacing:.08em;color:var(--accent)}
+h1,h2,h3{margin:.2em 0}
+h2{font-size:1.7em}
+
+.btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;min-height:60px;padding:14px 26px;font:inherit;font-weight:700;font-size:1.12em;border:2px solid var(--line);border-radius:12px;background:var(--btn);color:var(--btnTxt);cursor:pointer;box-shadow:0 6px 0 var(--btnSh);transition:transform .12s,box-shadow .12s,filter .2s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--btnSh)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--text);box-shadow:none}
+.btn.small{min-height:44px;padding:8px 16px;font-size:1em}
+.btn.danger{background:linear-gradient(135deg,#e63946,#9d0208);color:#fff;box-shadow:0 6px 0 #5c0007}
+.btn.wide{width:100%}
+.btn.sel{outline:3px solid var(--accent2)}
+
+input,select,textarea{width:100%;font:inherit;padding:14px;border-radius:10px;border:2px solid var(--line);background:#fff;color:#111;margin:6px 0 16px;box-sizing:border-box}
+input[type=checkbox],input[type=range]{width:auto}
+textarea{min-height:260px;font-family:Consolas,'Courier New',monospace;font-size:.95em}
+label{font-weight:700;display:block}
+
+.card{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:26px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,.15);animation:up .45s both}
+.pop{animation:pop .45s both}
+.shake{animation:shake .5s}
+
+.bar{height:22px;border-radius:99px;background:rgba(0,0,0,.15);overflow:hidden;border:1px solid var(--line);margin:10px 0}
+.bar>i{display:block;height:100%;width:var(--w,0%);background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .8s cubic-bezier(.2,.8,.2,1);position:relative}
+.bar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:sheen 2.2s infinite}
+
+.chip{border:2px solid var(--line);border-radius:99px;padding:8px 16px;font-weight:700;background:rgba(255,255,255,.1)}
+
+/* ===== LOGOWANIE ===== */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:min(92vw,440px);text-align:center}
+.logo-big{width:150px;height:150px;object-fit:contain;animation:float 4s ease-in-out infinite}
+
+/* ===== NAGŁÓWEK I MENU ===== */
+#app{max-width:1400px;margin:0 auto;padding:22px}
+.head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding:18px 26px}
+.logo-wide{height:64px;max-width:440px;object-fit:contain}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:20px 0}
+.nav .btn{min-height:96px;font-size:1.15em;flex-direction:column}
+@media(max-width:1000px){.nav{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== KURSY ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.course{cursor:pointer;transition:transform .2s}
+.course:hover{transform:translateY(-4px)}
+.badge{display:inline-block;font-size:.8em;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--accent2);color:#000;margin-left:6px}
+.section-t{margin:28px 0 12px}
+
+/* ===== ZADANIA ===== */
+.task{font-size:1.2em;line-height:1.7;white-space:pre-wrap;padding:22px;border-radius:12px;background:rgba(255,255,255,.12);border:1px dashed var(--line)}
+.hint{background:rgba(255,230,80,.22);border-left:8px solid #ffd93d;padding:14px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
+.expl{background:rgba(76,201,240,.18);border-left:8px solid var(--accent2);padding:16px 18px;border-radius:10px;margin-top:14px;white-space:pre-wrap;line-height:1.6}
+.result{margin-top:14px;font-size:1.15em}
+
+/* ===== KALENDARZ ===== */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal .hd{text-align:center;font-weight:700;color:var(--muted);padding:6px}
+.day{min-height:72px;border:2px solid var(--line);border-radius:10px;padding:8px;cursor:pointer;background:rgba(255,255,255,.08);position:relative;font-weight:700}
+.day.empty{border:none;background:none;cursor:default}
+.day.today{outline:3px solid var(--accent2)}
+.day.sel{background:var(--accent);color:#fff}
+.dot{position:absolute;bottom:8px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--accent2)}
+.ev{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px;border-radius:12px;border:2px solid var(--line);margin-bottom:10px;flex-wrap:wrap}
+
+/* ===== STATYSTYKI ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:20px}
+.stat{text-align:center;padding:18px}
+.stat b{display:block;font-size:2em;color:var(--accent)}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.charts{grid-template-columns:1fr}}
+.chart{width:100%;height:auto}
+.donut{width:220px;height:220px;display:block;margin:auto}
+.grid-line{stroke:var(--muted);stroke-opacity:.3}
+.bar-svg{fill:var(--accent)}
+.lbl{font-size:11px;fill:var(--text);text-anchor:middle}
+.linia{fill:none;stroke:var(--accent);stroke-width:3}
+.kropka{fill:var(--accent2)}
+.ring-bg{fill:none;stroke:var(--muted);stroke-opacity:.25;stroke-width:22}
+.ring{fill:none;stroke:var(--accent);stroke-width:22;stroke-linecap:round;transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dasharray 1s}
+.big-txt{font-size:30px;font-weight:700;text-anchor:middle;fill:var(--text)}
+.hrow{display:flex;align-items:center;gap:12px;margin:10px 0}
+.hrow span:first-child{width:200px;flex-shrink:0}
+.hrow .bar{flex:1;margin:0}
+
+/* ===== USTAWIENIA ===== */
+.motyw-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.swatch{display:inline-block;width:26px;height:26px;border-radius:6px;border:2px solid #000;vertical-align:middle;margin-right:8px}
+.font-btn{font-size:1.1em}
+.prompt-box{min-height:340px;font-size:.95em;background:#fff;color:#111}
+
+/* ===== EFEKTY ===== */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 26px;border-radius:99px;font-weight:700;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:pop .35s}
+.conf{position:fixed;top:-20px;width:10px;height:14px;z-index:998;animation:fall linear forwards;border-radius:2px}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@keyframes sheen{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@keyframes float{50%{transform:translateY(-10px)}}
+</style>
+</head>
+<body data-motyw="kolorowy">
+
+<div id="login">
+  <div class="card login-card">
+    <img src="logo.png" class="logo-big" alt="" onerror="this.style.display='none'">
+    <h1 class="brand-t">TRENING</h1>
+    <p class="muted">Wpisz hasło, aby wejść</p>
+    <input type="password" id="pass" placeholder="Hasło" onkeydown="if(event.key==='Enter')zaloguj()">
+    <button class="btn wide" onclick="zaloguj()"><img class="ico" src="check.png" alt="" onerror="this.style.display='none'">Wejdź</button>
+    <p id="passErr" class="bad hidden">Nieprawidłowe hasło</p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header class="card head">
+    <img src="logo-wide.png" class="logo-wide" alt="Logo" onerror="this.outerHTML='<span class=brand-t>TRENING</span>'">
+    <div class="chips">
+      <span class="chip">Punkty: <b id="ptsChip">0</b></span>
+      <span class="chip">Seria: <b id="streakChip">0</b></span>
+      <span class="chip">Rekord: <b id="recChip">0</b></span>
+    </div>
+  </header>
+  <nav class="nav">
+    <button class="btn" onclick="go('kursy')"><img class="ico" src="courses.png" alt="" onerror="this.style.display='none'">Kursy</button>
+    <button class="btn" onclick="go('kalendarz')"><img class="ico" src="calendar.png" alt="" onerror="this.style.display='none'">Kalendarz</button>
+    <button class="btn" onclick="go('statystyki')"><img class="ico" src="stats.png" alt="" onerror="this.style.display='none'">Statystyki</button>
+    <button class="btn" onclick="go('historia')"><img class="ico" src="history.png" alt="" onerror="this.style.display='none'">Historia</button>
+    <button class="btn" onclick="go('help')"><img class="ico" src="help.png" alt="" onerror="this.style.display='none'">Help</button>
+    <button class="btn" onclick="go('ustawienia')"><img class="ico" src="settings.png" alt="" onerror="this.style.display='none'">Ustawienia</button>
+  </nav>
+  <main id="view"></main>
+</div>
+
+<script>
+// ===================== KONFIGURACJA =====================
+const KLUCZ = "trening_v3";
+const HASLO = "matura2026";       // <-- zmień na własne
+const IKONA_EXT = "png";          // jeśli ikony są w SVG, zmień na "svg"
+
+const PRZEDMIOTY = {
+  "Matematyka": ["Funkcje","Równania","Geometria","Ciągi","Prawdopodobieństwo","Trygonometria","Pochodna"],
+  "Język angielski": ["Słownictwo","Gramatyka","Czytanie","Pisanie","Słuchanie"],
+  "Język polski": ["Lektury","Wypracowanie","Gramatyka","Interpretacja tekstu","Środki stylistyczne"],
+  "Informatyka": ["Algorytmy","Python","Bazy danych","Systemy operacyjne","Sieci komputerowe","HTML i CSS"]
+};
+const PRZ_IKONA = {"Matematyka":"math","Język angielski":"english","Język polski":"polish","Informatyka":"it"};
+
+const MOTYWY = [
+  ["kolorowy","Y2K kolorowy","linear-gradient(135deg,#ffd93d,#9fe2bf,#4cc9f0)"],
+  ["mono","Czarno-biały","linear-gradient(#ffffff,#000000)"],
+  ["czerwony","Czerwony","linear-gradient(#ff3b4e,#6b0012)"],
+  ["zielony","Zielony","linear-gradient(#3ddc84,#0f5132)"],
+  ["niebieski","Niebieski","linear-gradient(#5ec8ff,#1e5bc6)"],
+  ["xp","Retro XP (granat i szary)","linear-gradient(#0a246a,#d4d0c8)"]
+];
+const CZCIONKI = {
+  "Segoe UI": "'Segoe UI',Arial,sans-serif",
+  "Tahoma": "Tahoma,Geneva,sans-serif",
+  "Verdana": "Verdana,Geneva,sans-serif",
+  "Trebuchet MS": "'Trebuchet MS',Arial,sans-serif",
+  "Georgia": "Georgia,serif",
+  "Courier New": "'Courier New',monospace"
+};
+const MIESIACE = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
+
+// ===================== ZADANIA SYSTEMOWE (domyślne) =====================
+// odpowiedz: kilka dopuszczalnych form oddzielaj znakiem |
+const SYSTEM = [
+  {id:"sys-mat", przedmiot:"Matematyka", temat:"Memy i liczby", sys:true, zadania:[
+    {tresc:"Papież 2137 ma w lodówce 24 kremówki i zjada 3 dziennie. Po ilu dniach zostaną mu dokładnie 3 kremówki?",
+     odpowiedz:"7", podpowiedz:"Ile kremówek zostanie po 7 dniach?",
+     wyjasnienie:"24 − 3 × 7 = 24 − 21 = 3. Po 7 dniach zostają 3 kremówki."},
+    {tresc:"Kebab kosztuje 25 zł. Dzielicie rachunek równo między 5 osób. Ile zł płaci każda z nich?",
+     odpowiedz:"5", podpowiedz:"Podziel 25 przez 5.",
+     wyjasnienie:"25 : 5 = 5. Każda osoba płaci 5 zł, a kebab nadal jest legendarny."},
+    {tresc:"Ceny paliw wzrosły z 6,00 zł do 7,20 zł za litr. O ile procent wzrosły? Wpisz samą liczbę.",
+     odpowiedz:"20", podpowiedz:"Oblicz różnicę, a potem podziel ją przez starą cenę.",
+     wyjasnienie:"Wzrost to 1,20 zł. 1,20 : 6,00 = 0,2 = 20%."}
+  ]},
+  {id:"sys-ang", przedmiot:"Język angielski", temat:"Slang i memy", sys:true, zadania:[
+    {tresc:"Co oznacza slang „rizz”?\nA) zmęczenie\nB) umiejętność podrywu\nC) rodzaj samochodu\nWpisz literę.",
+     odpowiedz:"B", podpowiedz:"Pomyśl o uroku osobistym i tym, jak ktoś zagaduje.",
+     wyjasnienie:"Rizz to slangowe określenie zdolności do podrywania ludzi i budowania sympatii."},
+    {tresc:"Uzupełnij jednym słowem: The release of GTA VI has been ______ again.",
+     odpowiedz:"delayed", podpowiedz:"Przesunięta na późniejszy termin (passive voice).",
+     wyjasnienie:"Has been delayed, czyli zostało przesunięte. Czasownik delay w stronie biernej: be delayed."},
+    {tresc:"Dorota Wellman often ______ guests on TV. Wpisz jedno słowo: czasownik oznaczający przeprowadzanie wywiadu.",
+     odpowiedz:"interview", podpowiedz:"Rzeczownik to „interview”, a czasownik jest taki sam.",
+     wyjasnienie:"To interview (przeprowadzić wywiad). Dorota often interviews guests, czyli zaprasza gości i z nimi rozmawia."}
+  ]},
+  {id:"sys-pol", przedmiot:"Język polski", temat:"Blok, kremówka i hip-hop", sys:true, zadania:[
+    {tresc:"Dokończ wyrażenie z memów: „Blok ___”. Wpisz jedno słowo oznaczające grupę znajomych z osiedla.",
+     odpowiedz:"ekipa", podpowiedz:"Słowo często pojawia się w polskim hip-hopie.",
+     wyjasnienie:"Blok ekipa to pozdrowienie dla znajomych z osiedla. Ekipa to grupa osób, które się trzymają razem."},
+    {tresc:"Napisz poprawnie: kremówka czy kremowka? Wpisz poprawną formę.",
+     odpowiedz:"kremówka", podpowiedz:"Pamiętaj o polskich znakach diakrytycznych.",
+     wyjasnienie:"Poprawna pisownia to kremówka, z literą „ó”. Chociaż papież 2137 pewnie nie zwróci na to uwagi."},
+    {tresc:"Kremówka papieska to rodzaj ___. Wpisz jedno słowo.",
+     odpowiedz:"ciasto|deser", podpowiedz:"Słodki wypiek z kremem.",
+     wyjasnienie:"Kremówka to ciasto z kremem i kruchym spodem. Zwykle je się je jako deser."}
+  ]},
+  {id:"sys-inf", przedmiot:"Informatyka", temat:"Python dla memów", sys:true, zadania:[
+    {tresc:"Co wypisze ten kod w Pythonie?\nprint('kebab' * 2)",
+     odpowiedz:"kebabkebab", podpowiedz:"Mnożenie napisu przez liczbę skleja kopie napisu.",
+     wyjasnienie:"Operator * przy napisie powtarza go tyle razy, ile wynosi liczba. Wynik to kebabkebab."},
+    {tresc:"Ile wynosi 2 ** 10 w Pythonie?",
+     odpowiedz:"1024", podpowiedz:"Dwa do potęgi dziesiątej.",
+     wyjasnienie:"2 ** 10 oznacza 2 do potęgi 10, czyli 1024."},
+    {tresc:"Jak nazywa się w Pythonie brak wartości? Wpisz słowo kluczowe.",
+     odpowiedz:"None", podpowiedz:"Zaczyna się wielką literą N.",
+     wyjasnienie:"None to specjalna wartość oznaczająca brak wartości. Sprawdzasz ją przez is None."}
+  ]}
+];
+
+// ===================== STAN =====================
+function domyslne(){
+  return {
+    ustawienia: {motyw:"kolorowy", czcionka:"Segoe UI", rozmiar:17, anim:true},
+    kursy: [], historia: [], wydarzenia: [],
+    punkty: 0, seria: 0, maxSeria: 0, sysOk: {}
+  };
+}
+function wczytaj(){
+  const d = domyslne();
+  try {
+    const s = JSON.parse(localStorage.getItem(KLUCZ) || "null");
+    if (s) return {...d, ...s, ustawienia: {...d.ustawienia, ...(s.ustawienia || {})}};
+  } catch(e){}
+  return d;
+}
+let dane = wczytaj();
+let odpowiedziono = false, uzytaPodpowiedz = false, aktualne = {id:null, i:0};
+let cal = {y: new Date().getFullYear(), m: new Date().getMonth(), sel: null};
+cal.sel = klucz(new Date());
+
+// ===================== POMOCNICZE =====================
+const $ = id => document.getElementById(id);
+function zapisz(){ localStorage.setItem(KLUCZ, JSON.stringify(dane)); odswiezPasek(); }
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function ikona(n, cls=""){ return `<img class="ico ${cls}" src="${n}.${IKONA_EXT}" alt="" onerror="this.style.display='none'">`; }
+function V(h){ $("view").innerHTML = h; }
+function pad(n){ return String(n).padStart(2,"0"); }
+function klucz(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function kurs(id){ return SYSTEM.find(x => x.id === id) || dane.kursy.find(k => k.id === id); }
+function nazwaKursu(id){ const k = kurs(id); return k ? `${k.przedmiot} · ${k.temat}` : "(usunięty kurs)"; }
+function czyOk(k){ return k.sys ? (dane.sysOk[k.id] || []) : (k.ok || []); }
+function dodajOk(k, i){
+  if (k.sys){ dane.sysOk[k.id] = dane.sysOk[k.id] || []; if (!dane.sysOk[k.id].includes(i)) dane.sysOk[k.id].push(i); }
+  else { k.ok = k.ok || []; if (!k.ok.includes(i)) k.ok.push(i); }
+}
+function proc(k){ return k.zadania.length ? Math.round(czyOk(k).length / k.zadania.length * 100) : 0; }
+function toast(t){
+  const el = document.createElement("div");
+  el.className = "toast"; el.textContent = t;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+function konfetti(){
+  const kolory = ["#FFD93D","#9FE2BF","#4CC9F0","#F72585","#7209B7"];
+  for (let i = 0; i < 90; i++){
+    const c = document.createElement("div");
+    c.className = "conf";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = kolory[i % kolory.length];
+    c.style.animationDuration = (2 + Math.random() * 2) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4500);
+  }
+}
+function odswiezPasek(){
+  $("ptsChip").textContent = dane.punkty;
+  $("streakChip").textContent = dane.seria;
+  $("recChip").textContent = dane.maxSeria;
+}
+function applyUstawienia(){
+  const u = dane.ustawienia;
+  document.body.dataset.motyw = u.motyw;
+  document.body.style.fontFamily = CZCIONKI[u.czcionka] || CZCIONKI["Segoe UI"];
+  document.body.style.fontSize = u.rozmiar + "px";
+  document.body.classList.toggle("noanim", !u.anim);
+}
+
+// ===================== LOGOWANIE I ROUTING =====================
+function zaloguj(){
+  if ($("pass").value === HASLO){
+    $("login").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    go("kursy");
+  } else {
+    $("passErr").classList.remove("hidden");
+    const k = document.querySelector("#login .card");
+    k.classList.add("shake");
+    setTimeout(() => k.classList.remove("shake"), 500);
+  }
+}
+function go(widok, a, b){
+  const mapa = {
+    kursy: renderKursy, nowy: renderNowy, kurs: () => renderKurs(a),
+    dodaj: () => renderDodaj(a), rozwiazuj: () => renderRozwiazuj(a, b || 0),
+    kalendarz: renderKalendarz, statystyki: renderStatystyki,
+    historia: renderHistoria, help: renderHelp, ustawienia: renderUstawienia
+  };
+  mapa[widok]();
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+// ===================== KURSY =====================
+function kartaKursu(k, systemowy){
+  const p = proc(k);
+  return `<div class="card course" onclick="go('kurs','${k.id}')">
+    <div class="row">
+      ${ikona(PRZ_IKONA[k.przedmiot], "big")}
+      <div><h3>${esc(k.temat)}${systemowy ? '<span class="badge">systemowe</span>' : ''}</h3>
+      <div class="muted">${esc(k.przedmiot)} · zadań: ${k.zadania.length}</div></div>
+    </div>
+    <div class="bar" style="--w:${p}%"><i></i></div>
+    <div class="muted">Postęp: ${p}%</div>
+  </div>`;
+}
+function renderKursy(){
+  let h = `<div class="row between"><h2>Moje kursy</h2>
+    <button class="btn" onclick="go('nowy')"><img class="ico" src="add.png" alt="" onerror="this.style.display='none'">Nowy kurs</button></div>`;
+  if (!dane.kursy.length) h += `<div class="card"><p>Nie masz jeszcze kursów. Dodaj pierwszy, np. z matematyki.</p></div>`;
+  h += `<div class="grid">${dane.kursy.map(k => kartaKursu(k, false)).join("")}</div>`;
+  h += `<h2 class="section-t">Zadania systemowe do ćwiczeń</h2><div class="grid">${SYSTEM.map(k => kartaKursu(k, true)).join("")}</div>`;
+  V(h);
+}
+function renderNowy(){
+  const opcje = Object.keys(PRZEDMIOTY).map(p => `<option>${esc(p)}</option>`).join("");
+  V(`<div class="card pop"><h2>Nowy kurs</h2>
+    <label>Przedmiot</label>
+    <select id="przedm" onchange="odswiezTematy()">${opcje}</select>
+    <label>Zagadnienie (wybierz z listy lub wpisz własne)</label>
+    <input id="temat" list="tematy" placeholder="np. Pochodna">
+    <datalist id="tematy"></datalist>
+    <div class="row">
+      <button class="btn" onclick="zapiszKurs()">Utwórz</button>
+      <button class="btn ghost" onclick="go('kursy')">Anuluj</button>
+    </div></div>`);
+  odswiezTematy();
+}
+function odswiezTematy(){
+  const p = $("przedm").value;
+  $("tematy").innerHTML = PRZEDMIOTY[p].map(t => `<option value="${esc(t)}">`).join("");
+}
+function zapiszKurs(){
+  const p = $("przedm").value, t = $("temat").value.trim();
+  if (!t) return toast("Wpisz zagadnienie");
+  dane.kursy.push({id: Date.now().toString(), przedmiot: p, temat: t, zadania: [], ok: []});
+  zapisz();
+  toast("Kurs utworzony");
+  go("kursy");
+}
+function renderKurs(id){
+  const k = kurs(id);
+  if (!k) return go("kursy");
+  const p = proc(k);
+  V(`<div class="card pop">
+    <div class="row">${ikona(PRZ_IKONA[k.przedmiot], "big")}
+      <div><h2>${esc(k.temat)}</h2><div class="muted">${esc(k.przedmiot)}</div></div></div>
+    <div class="bar" style="--w:${p}%"><i></i></div>
+    <p class="muted">Opanowane zadania: ${czyOk(k).length} z ${k.zadania.length} (${p}%)</p>
+    <div class="row" style="margin-top:18px">
+      <button class="btn" ${k.zadania.length ? "" : "disabled"} onclick="go('rozwiazuj','${id}',0)">
+        <img class="ico" src="explain.png" alt="" onerror="this.style.display='none'">Rozwiązuj zadania</button>
+      ${k.sys ? "" : `<button class="btn" onclick="go('dodaj','${id}')"><img class="ico" src="add.png" alt="" onerror="this.style.display='none'">Dodaj treść</button>`}
+      <button class="btn ghost" onclick="go('kursy')">Wstecz</button>
+      ${k.sys ? "" : `<button class="btn small danger" onclick="usunKurs('${id}')"><img class="ico" src="delete.png" alt="" onerror="this.style.display='none'">Usuń kurs</button>`}
+    </div></div>`);
+}
+function usunKurs(id){
+  if (!confirm("Na pewno usunąć ten kurs?")) return;
+  dane.kursy = dane.kursy.filter(k => k.id !== id);
+  dane.wydarzenia = dane.wydarzenia.map(w => w.kursId === id ? {...w, kursId: ""} : w);
+  zapisz();
+  go("kursy");
+}
+
+// ===================== DODAJ TREŚĆ =====================
+const PRZYKLAD = `[
+  {"tresc": "Oblicz f(4), jeśli f(x) = 2x + 3.", "odpowiedz": "11",
+   "podpowiedz": "Podstaw 4 zamiast x.", "wyjasnienie": "f(4) = 2 · 4 + 3 = 11"},
+  {"tresc": "Ile wynosi 2 + 3 · 4 ?", "odpowiedz": "14|14,0",
+   "wyjasnienie": "Najpierw mnożenie: 3 · 4 = 12, potem 2 + 12 = 14"}
+]`;
+function renderDodaj(id){
+  V(`<div class="card pop"><h2>Dodaj treść</h2>
+    <p class="muted">Wklej zadania w formacie JSON. Pola <b>tresc</b> i <b>odpowiedz</b> są wymagane, <b>podpowiedz</b> i <b>wyjasnienie</b> opcjonalne. Kilka dopuszczalnych odpowiedzi oddziel znakiem | . Gotowy prompt do AI znajdziesz w zakładce Help.</p>
+    <textarea id="json">${esc(PRZYKLAD)}</textarea>
+    <div class="row">
+      <button class="btn" onclick="zapiszZadania('${id}')">Zapisz zadania</button>
+      <button class="btn ghost" onclick="go('kurs','${id}')">Wstecz</button>
+    </div></div>`);
+}
+function zapiszZadania(id){
+  const k = kurs(id);
+  let nowe;
+  try { nowe = JSON.parse($("json").value); }
+  catch(e){ return alert("Błąd w formacie JSON:\n" + e.message); }
+  if (!Array.isArray(nowe)) return alert("Treść musi być tablicą i zaczynać się od [");
+  const zle = nowe.findIndex(z => !z.tresc || z.odpowiedz === undefined);
+  if (zle >= 0) return alert(`Zadanie nr ${zle + 1} nie ma pola "tresc" albo "odpowiedz"`);
+  k.zadania.push(...nowe.map(z => ({
+    tresc: z.tresc, odpowiedz: String(z.odpowiedz),
+    podpowiedz: z.podpowiedz || "", wyjasnienie: z.wyjasnienie || ""
+  })));
+  zapisz();
+  konfetti();
+  toast(`Dodano ${nowe.length} zadań`);
+  go("kurs", id);
+}
+
+// ===================== ROZWIĄZYWANIE =====================
+function renderRozwiazuj(id, i){
+  const k = kurs(id);
+  if (!k || !k.zadania.length) return go("kurs", id);
+  if (i >= k.zadania.length){
+    const p = proc(k);
+    V(`<div class="card pop" style="text-align:center">
+      <h2>Koniec kursu</h2>
+      <p>Opanowałeś <b>${czyOk(k).length}</b> z <b>${k.zadania.length}</b> zadań (${p}%).</p>
+      <div class="bar" style="--w:${p}%"><i></i></div>
+      <div class="row" style="justify-content:center;margin-top:16px">
+        <button class="btn" onclick="go('rozwiazuj','${id}',0)">Od początku</button>
+        <button class="btn ghost" onclick="go('kurs','${id}')">Wróć do kursu</button>
+      </div></div>`);
+    konfetti();
+    return;
+  }
+  odpowiedziono = false; uzytaPodpowiedz = false;
+  aktualne = {id, i};
+  const p = Math.round(i / k.zadania.length * 100);
+  V(`<div class="card pop" id="karta">
+    <div class="row between">
+      <span class="muted">${esc(k.przedmiot)} · ${esc(k.temat)}</span>
+      <span class="chip">Zadanie ${i + 1} / ${k.zadania.length}</span>
+    </div>
+    <div class="bar" style="--w:${p}%"><i></i></div>
+    <div class="task">${esc(k.zadania[i].tresc)}</div>
+    <input id="odp" placeholder="Twoja odpowiedź (Enter = sprawdź, drugi Enter = dalej)" autocomplete="off"
+      onkeydown="klawisz(event,'${id}',${i})">
+    <div class="row">
+      <button class="btn" id="btnOdp" onclick="sprawdzOdp('${id}',${i})">Odpowiedz</button>
+      <button class="btn" style="background:linear-gradient(135deg,#4cc9f0,#7209b7);color:#fff" onclick="pokazPodpowiedz()"><img class="ico" src="hint.png" alt="" onerror="this.style.display='none'">Podpowiedź (-5 pkt)</button>
+      <button class="btn" onclick="pokazWyjasnienie()"><img class="ico" src="explain.png" alt="" onerror="this.style.display='none'">Wyjaśnienie</button>
+      <button class="btn ghost" onclick="go('rozwiazuj','${id}',${i + 1})"><img class="ico" src="next.png" alt="" onerror="this.style.display='none'">Następne</button>
+    </div>
+    <div id="podp"></div>
+    <div id="wynik" class="result"></div>
+    <div id="wyj"></div>
+  </div>`);
+  setTimeout(() => { const el = $("odp"); if (el) el.focus(); }, 50);
+}
+function klawisz(e, id, i){
+  if (e.key !== "Enter") return;
+  if (odpowiedziono) go("rozwiazuj", id, i + 1);
+  else sprawdzOdp(id, i);
+}
+function pokazPodpowiedz(){
+  const k = kurs(aktualne.id), z = k && k.zadania[aktualne.i];
+  if (!z) return;
+  if (!z.podpowiedz) return toast("Brak podpowiedzi do tego zadania");
+  uzytaPodpowiedz = true;
+  $("podp").innerHTML = `<div class="hint pop">${esc(z.podpowiedz)}</div>`;
+}
+function pokazWyjasnienie(){
+  const k = kurs(aktualne.id), z = k && k.zadania[aktualne.i];
+  if (!z) return;
+  $("wyj").innerHTML = `<div class="expl pop">${esc(z.wyjasnienie || "Brak wyjaśnienia.")}</div>`;
+}
+function sprawdzOdp(id, i){
+  if (odpowiedziono) return;
+  const k = kurs(id), z = k.zadania[i];
+  const podana = $("odp").value.trim();
+  if (!podana) return toast("Wpisz odpowiedź");
+  odpowiedziono = true;
+  const dozwolone = String(z.odpowiedz).split("|").map(s => s.trim().toLowerCase());
+  const dobra = dozwolone.includes(podana.toLowerCase());
+  const pkt = dobra ? (uzytaPodpowiedz ? 5 : 10) : 0;
+
+  if (dobra){
+    dane.punkty += pkt;
+    dane.seria += 1;
+    dane.maxSeria = Math.max(dane.maxSeria, dane.seria);
+    dodajOk(k, i);
+  } else {
+    dane.seria = 0;
+  }
+  const now = new Date();
+  dane.historia.unshift({
+    ts: now.getTime(), dzien: klucz(now), data: now.toLocaleString("pl-PL"),
+    przedmiot: k.przedmiot, kurs: k.temat, zadanie: i + 1,
+    podana, poprawna: dozwolone[0], dobra, pkt
+  });
+  dane.historia = dane.historia.slice(0, 1000);
+  zapisz();
+
+  $("odp").disabled = true;
+  $("btnOdp").disabled = true;
+  $("wynik").innerHTML = dobra
+    ? `<span class="ok">Dobrze! +${pkt} pkt</span>`
+    : `<span class="bad">Nie tym razem.</span> Poprawna odpowiedź: <b>${esc(dozwolone[0])}</b>`;
+  const karta = $("karta");
+  if (dobra) konfetti();
+  else { karta.classList.add("shake"); setTimeout(() => karta.classList.remove("shake"), 500); }
+}
+
+// ===================== KALENDARZ =====================
+function zmienMiesiac(d){
+  cal.m += d;
+  if (cal.m < 0){ cal.m = 11; cal.y--; }
+  if (cal.m > 11){ cal.m = 0; cal.y++; }
+  renderKalendarz();
+}
+function dzisiaj(){
+  const t = new Date();
+  cal = {y: t.getFullYear(), m: t.getMonth(), sel: klucz(t)};
+  renderKalendarz();
+}
+function wybierzDzien(k){
+  cal.sel = k;
+  renderKalendarz();
+}
+function renderKalendarz(){
+  const pierwszy = new Date(cal.y, cal.m, 1);
+  const przesun = (pierwszy.getDay() + 6) % 7;
+  const ile = new Date(cal.y, cal.m + 1, 0).getDate();
+  const dzisK = klucz(new Date());
+  let siatka = ["Pn","Wt","Śr","Cz","Pt","So","Nd"].map(d => `<div class="hd">${d}</div>`).join("");
+  for (let i = 0; i < przesun; i++) siatka += `<div class="day empty"></div>`;
+  for (let d = 1; d <= ile; d++){
+    const k = `${cal.y}-${pad(cal.m + 1)}-${pad(d)}`;
+    const ma = dane.wydarzenia.some(w => w.data === k);
+    siatka += `<div class="day ${k === dzisK ? "today" : ""} ${k === cal.sel ? "sel" : ""}" onclick="wybierzDzien('${k}')">${d}${ma ? '<span class="dot"></span>' : ""}</div>`;
+  }
+  const prefix = `${cal.y}-${pad(cal.m + 1)}`;
+  const listaMies = dane.wydarzenia.filter(w => w.data.startsWith(prefix)).sort((a, b) => a.data.localeCompare(b.data));
+  const listaHtml = listaMies.length ? listaMies.map(w => `
+    <div class="ev">
+      <div><b>${esc(w.data)}${w.godz ? " · " + esc(w.godz) : ""}</b> · ${esc(w.kat)}<br>${esc(w.tytul)}
+        ${w.kursId ? `<div class="muted">Kurs: ${esc(nazwaKursu(w.kursId))}</div>` : ""}</div>
+      <div class="row">
+        ${w.kursId ? `<button class="btn small" onclick="go('kurs','${w.kursId}')">Otwórz kurs</button>` : ""}
+        <button class="btn small danger" onclick="usunWydarzenie('${w.id}')">Usuń</button>
+      </div></div>`).join("") : `<p class="muted">Brak wydarzeń w tym miesiącu.</p>`;
+
+  const kursyOpcje = `<option value="">— brak —</option>` +
+    [...SYSTEM, ...dane.kursy].map(k => `<option value="${k.id}">${esc(k.przedmiot)} · ${esc(k.temat)}</option>`).join("");
+
+  V(`<div class="row between" style="margin-bottom:18px">
+      <h2>${MIESIACE[cal.m]} ${cal.y}</h2>
+      <div class="row">
+        <button class="btn small" onclick="zmienMiesiac(-1)">◀</button>
+        <button class="btn small" onclick="dzisiaj()">Dziś</button>
+        <button class="btn small" onclick="zmienMiesiac(1)">▶</button>
+      </div></div>
+    <div class="card"><div class="cal">${siatka}</div></div>
+    <div class="card pop"><h3>Nowe wydarzenie</h3>
+      <div class="row" style="align-items:flex-end">
+        <div style="flex:2;min-width:220px"><label>Tytuł</label><input id="w_tytul" placeholder="np. Kurs na prawo jazdy, sesja, termin"></div>
+        <div style="flex:1;min-width:160px"><label>Data</label><input type="date" id="w_data" value="${cal.sel}"></div>
+        <div style="flex:1;min-width:120px"><label>Godzina</label><input type="time" id="w_godz"></div>
+      </div>
+      <div class="row" style="align-items:flex-end">
+        <div style="flex:1;min-width:200px"><label>Kategoria</label>
+          <select id="w_kat"><option>Kurs</option><option>Egzamin</option><option>Nauka</option><option>Termin</option><option>Inne</option></select></div>
+        <div style="flex:2;min-width:240px"><label>Powiąż z kursem (opcjonalnie)</label>
+          <select id="w_kurs">${kursyOpcje}</select></div>
+        <button class="btn" onclick="dodajWydarzenie()">Dodaj</button>
+      </div></div>
+    <div class="card"><h3>Wydarzenia w tym miesiącu</h3>${listaHtml}</div>`);
+}
+function dodajWydarzenie(){
+  const tytul = $("w_tytul").value.trim();
+  const data = $("w_data").value;
+  if (!tytul) return toast("Wpisz tytuł wydarzenia");
+  if (!data) return toast("Wybierz datę");
+  dane.wydarzenia.push({id: Date.now().toString(), data, godz: $("w_godz").value, tytul, kat: $("w_kat").value, kursId: $("w_kurs").value});
+  zapisz();
+  cal.sel = data;
+  cal.y = +data.slice(0, 4);
+  cal.m = +data.slice(5, 7) - 1;
+  toast("Dodano wydarzenie");
+  renderKalendarz();
+}
+function usunWydarzenie(id){
+  if (!confirm("Usunąć wydarzenie?")) return;
+  dane.wydarzenia = dane.wydarzenia.filter(w => w.id !== id);
+  zapisz();
+  renderKalendarz();
+}
+
+// ===================== STATYSTYKI =====================
+function wykresSlupkowy(etykiety, wartosci){
+  const W = 640, H = 240, P = 34;
+  const max = Math.max(1, ...wartosci);
+  const n = wartosci.length, szer = (W - 2 * P) / n;
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="chart">`;
+  for (let g = 0; g <= 4; g++){
+    const y = P / 2 + (H - P - P / 2) * g / 4;
+    s += `<line x1="${P}" x2="${W - P / 2}" y1="${y}" y2="${y}" class="grid-line"/>`;
+  }
+  wartosci.forEach((v, i) => {
+    const h = (H - P - P / 2) * v / max;
+    const x = P + i * szer + szer * 0.15, y = H - P - h;
+    s += `<rect x="${x}" y="${y}" width="${szer * 0.7}" height="${h}" rx="4" class="bar-svg"><title>${etykiety[i]}: ${v}</title></rect>`;
+    s += `<text x="${x + szer * 0.35}" y="${H - P + 14}" class="lbl">${etykiety[i]}</text>`;
+  });
+  return s + `</svg>`;
+}
+function wykresKolowy(dobre, zle){
+  const suma = dobre + zle, frac = suma ? dobre / suma : 0, r = 70, C = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 200 200" class="donut">
+    <circle cx="100" cy="100" r="${r}" class="ring-bg"/>
+    <circle cx="100" cy="100" r="${r}" class="ring" style="stroke-dasharray:${C * frac} ${C}"/>
+    <text x="100" y="110" class="big-txt">${Math.round(frac * 100)}%</text></svg>`;
+}
+function wykresLiniowy(vals){
+  if (vals.length < 2) return `<p class="muted">Za mało danych do wykresu. Rozwiąż więcej zadań.</p>`;
+  const W = 640, H = 240, P = 34;
+  const max = Math.max(1, ...vals), n = vals.length;
+  const pts = vals.map((v, i) => [P + i * (W - 2 * P) / (n - 1), H - P - (H - 2 * P) * v / max]);
+  const linia = pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  return `<svg viewBox="0 0 ${W} ${H}" class="chart"><polyline points="${linia}" class="linia"/>` +
+    pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4" class="kropka"/>`).join("") + `</svg>`;
+}
+function renderStatystyki(){
+  const h = dane.historia;
+  const ile = h.length, dobre = h.filter(x => x.dobra).length, zle = ile - dobre;
+  const procent = ile ? Math.round(dobre / ile * 100) : 0;
+  const dniAktywne = new Set(h.map(x => x.dzien)).size;
+
+  const dni = [];
+  for (let i = 13; i >= 0; i--){ const d = new Date(); d.setDate(d.getDate() - i); dni.push(klucz(d)); }
+  const etykiety = dni.map(k => k.slice(8) + "." + k.slice(5, 7));
+  const perDzien = dni.map(k => h.filter(x => x.dzien === k).length);
+
+  const przedm = [...new Set(h.map(x => x.przedmiot))];
+  const wgPrzed = przedm.map(p => {
+    const w = h.filter(x => x.przedmiot === p);
+    const ok = w.filter(x => x.dobra).length;
+    return {p, proc: Math.round(ok / w.length * 100), ile: w.length};
+  });
+  const wiersze = wgPrzed.length
+    ? wgPrzed.map(x => `<div class="hrow"><span>${esc(x.p)} (${x.ile})</span><div class="bar" style="--w:${x.proc}%"><i></i></div><b>${x.proc}%</b></div>`).join("")
+    : `<p class="muted">Brak danych.</p>`;
+
+  const punktyNarast = h.slice().reverse().reduce((acc, x) => { acc.push((acc[acc.length - 1] || 0) + x.pkt); return acc; }, []);
+
+  const postepKursow = [...SYSTEM, ...dane.kursy].map(k => `<div class="hrow"><span>${esc(k.temat)}</span>
+    <div class="bar" style="--w:${proc(k)}%"><i></i></div><b>${proc(k)}%</b></div>`).join("");
+
+  V(`<h2>Statystyki</h2>
+    <div class="stat-grid">
+      <div class="card stat"><span class="muted">Odpowiedzi</span><b>${ile}</b></div>
+      <div class="card stat"><span class="muted">Poprawnych</span><b>${procent}%</b></div>
+      <div class="card stat"><span class="muted">Punkty</span><b>${dane.punkty}</b></div>
+      <div class="card stat"><span class="muted">Najdłuższa seria</span><b>${dane.maxSeria}</b></div>
+      <div class="card stat"><span class="muted">Dni aktywnych</span><b>${dniAktywne}</b></div>
+      <div class="card stat"><span class="muted">Kursy i zestawy</span><b>${dane.kursy.length + SYSTEM.length}</b></div>
+    </div>
+    <div class="charts">
+      <div class="card"><h3>Odpowiedzi z ostatnich 14 dni</h3>${wykresSlupkowy(etykiety, perDzien)}</div>
+      <div class="card"><h3>Poprawne i błędne</h3>${wykresKolowy(dobre, zle)}
+        <p class="muted" style="text-align:center">Poprawne: ${dobre} · błędne: ${zle}</p></div>
+      <div class="card"><h3>Skuteczność według przedmiotu</h3>${wiersze}</div>
+      <div class="card"><h3>Punkty w czasie</h3>${wykresLiniowy(punktyNarast)}</div>
+      <div class="card" style="grid-column:1/-1"><h3>Postęp w kursach</h3>${postepKursow}</div>
+    </div>`);
+}
+
+// ===================== HISTORIA =====================
+function renderHistoria(){
+  const ile = dane.historia.length;
+  let h = `<div class="row between"><h2>Historia</h2>
+    <button class="btn small ghost" onclick="wyczyscHistorie()">Wyczyść</button></div>`;
+  if (!ile) h += `<div class="card"><p class="muted">Brak historii. Rozwiąż pierwsze zadanie.</p></div>`;
+  dane.historia.forEach(x => {
+    h += `<div class="card" style="padding:16px 22px">
+      <span class="${x.dobra ? "ok" : "bad"}">${x.dobra ? "✓" : "✗"}</span>
+      <b>${esc(x.przedmiot)}</b> · ${esc(x.kurs)} · zadanie ${x.zadanie}
+      <div class="muted">${esc(x.data)} · Twoja: ${esc(x.podana)} · poprawna: ${esc(x.poprawna)}${x.pkt ? ` · +${x.pkt} pkt` : ""}</div>
+    </div>`;
+  });
+  V(h);
+}
+function wyczyscHistorie(){
+  if (!confirm("Wyczyścić całą historię?")) return;
+  dane.historia = [];
+  zapisz();
+  renderHistoria();
+}
+
+// ===================== HELP =====================
+const PROMPT_AI = `Jesteś nauczycielem przygotowującym zadania do aplikacji "Trening". Do wiadomości dołączam zdjęcia zadań z przedmiotu: [WPISZ PRZEDMIOT].
+
+Zrób dla KAŻDEGO zadania ze zdjęć:
+1. Dokładnie odczytaj treść, łącznie z danymi, tabelami i wzorami.
+2. Rozwiąż zadanie.
+3. Zwróć WYŁĄCZNIE tablicę JSON, bez żadnego tekstu przed i po, bez oznaczeń kodu markdown.
+
+Format każdego elementu:
+{"tresc": "pełna treść zadania", "odpowiedz": "krótka poprawna odpowiedź", "podpowiedz": "jedno zdanie naprowadzające, bez zdradzania wyniku", "wyjasnienie": "rozwiązanie krok po kroku po polsku"}
+
+Zasady:
+- "odpowiedz" ma być krótka: liczba, litera albo jedno słowo. Jeśli dopuszczasz kilka form, oddziel je znakiem | (np. "1/2|0,5").
+- Podpunkty (a, b, c) zapisz jako osobne elementy tablicy. W treści powtórz polecenie i potrzebne dane.
+- Wzory zapisuj zwykłym tekstem, np. x^2, sqrt(x), 3/4.
+- Nie używaj cudzysłowów w środku tekstów (używaj „ ” albo pojedynczych apostrofów).
+- Jeśli czegoś nie widać na zdjęciu, napisz to w "wyjasnienie" zamiast zgadywać.
+- Każdy element musi mieć pola "tresc" i "odpowiedz".`;
+
+function renderHelp(){
+  V(`<div class="card pop"><h2>Help: jak przygotować zadania z załączników</h2>
+    <ol style="line-height:1.8">
+      <li>Zrób zdjęcia zadań (ostre, dobrze oświetlone, każde zadanie dobrze widoczne).</li>
+      <li>Otwórz AI (np. Claude), wklej poniższy prompt, zmień przedmiot i dołącz zdjęcia.</li>
+      <li>Skopiuj odpowiedź AI (sama tablica JSON, zaczyna się od [).</li>
+      <li>W aplikacji wejdź w <b>Kursy → Nowy kurs → Dodaj treść</b>, usuń przykład i wklej odpowiedź AI, potem kliknij <b>Zapisz zadania</b>.</li>
+    </ol>
+    <label>Prompt do skopiowania</label>
+    <textarea class="prompt-box" id="promptBox" readonly>${esc(PROMPT_AI)}</textarea>
+    <div class="row"><button class="btn" onclick="kopiujPrompt()">Kopiuj prompt</button></div>
+  </div>
+  <div class="card"><h3>Skróty i wskazówki</h3>
+    <p>Enter w polu odpowiedzi sprawdza odpowiedź, a kolejny Enter przechodzi dalej.</p>
+    <p>Podpowiedź kosztuje 5 pkt zamiast 10 za poprawną odpowiedź. Błędna odpowiedź zeruje serię.</p>
+    <p>Dane zapisują się w przeglądarce tego komputera. Zrób kopię zapasową w Ustawieniach, zanim wyczyścisz przeglądarkę.</p>
+    <p>Zadania systemowe są gotowe do ćwiczenia i nie da się ich edytować ani usunąć.</p>
+  </div>`);
+}
+function kopiujPrompt(){
+  const box = $("promptBox");
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(PROMPT_AI).then(() => toast("Prompt skopiowany"), () => { box.select(); document.execCommand("copy"); toast("Prompt skopiowany"); });
+  } else { box.select(); document.execCommand("copy"); toast("Prompt skopiowany"); }
+}
+
+// ===================== USTAWIENIA =====================
+function renderUstawienia(){
+  const u = dane.ustawienia;
+  const motywy = MOTYWY.map(([k, n, sw]) => `
+    <button class="btn ${u.motyw === k ? "sel" : ""}" onclick="ustawMotyw('${k}')">
+      <span class="swatch" style="background:${sw}"></span>${n}</button>`).join("");
+  const fonty = Object.keys(CZCIONKI).map(n => `
+    <button class="btn font-btn ${u.czcionka === n ? "sel" : ""}" style="font-family:${CZCIONKI[n]}" onclick="ustawCzcionke('${n}')">${n}</button>`).join("");
+  V(`<div class="card pop"><h2>Motyw kolorystyczny</h2>
+      <div class="motyw-btns">${motywy}</div></div>
+    <div class="card"><h2>Czcionka</h2>
+      <div class="row">${fonty}</div></div>
+    <div class="card"><h2>Ustawienia ogólne</h2>
+      <label>Wielkość czcionki: <span id="rVal">${u.rozmiar}</span> px</label>
+      <input type="range" min="14" max="24" value="${u.rozmiar}" oninput="$('rVal').textContent=this.value" onchange="ustawRozmiar(this.value)">
+      <div class="row" style="margin-top:14px">
+        <button class="btn ${u.anim ? "sel" : ""}" onclick="przelaczAnim()">Animacje: ${u.anim ? "włączone" : "wyłączone"}</button>
+      </div></div>
+    <div class="card"><h2>Kopia zapasowa</h2>
+      <p class="muted">Zapisz wszystkie kursy, wydarzenia i historię do pliku, albo wczytaj wcześniejszą kopię.</p>
+      <div class="row">
+        <button class="btn" onclick="eksport()">Eksportuj do pliku</button>
+        <label class="btn ghost" style="margin:0;cursor:pointer">Importuj z pliku
+          <input type="file" accept=".json" onchange="importuj(this)" style="display:none"></label>
+        <button class="btn small danger" onclick="resetuj()">Resetuj wszystko</button>
+      </div></div>`);
+}
+function ustawMotyw(k){ dane.ustawienia.motyw = k; zapisz(); applyUstawienia(); renderUstawienia(); }
+function ustawCzcionke(n){ dane.ustawienia.czcionka = n; zapisz(); applyUstawienia(); renderUstawienia(); }
+function ustawRozmiar(v){ dane.ustawienia.rozmiar = +v; zapisz(); applyUstawienia(); }
+function przelaczAnim(){ dane.ustawienia.anim = !dane.ustawienia.anim; zapisz(); applyUstawienia(); renderUstawienia(); }
+
+function eksport(){
+  const blob = new Blob([JSON.stringify(dane, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "trening-kopia.json";
+  a.click();
+}
+function importuj(input){
+  const plik = input.files[0];
+  if (!plik) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const nowe = JSON.parse(r.result);
+      if (!Array.isArray(nowe.kursy)) throw new Error("brak listy kursów");
+      const d = domyslne();
+      dane = {...d, ...nowe, ustawienia: {...d.ustawienia, ...(nowe.ustawienia || {})}};
+      zapisz();
+      applyUstawienia();
+      toast("Kopia wczytana");
+      go("kursy");
+    } catch(e){ alert("Nie udało się wczytać pliku: " + e.message); }
+  };
+  r.readAsText(plik);
+}
+function resetuj(){
+  if (!confirm("Na pewno skasować wszystkie kursy, wydarzenia i historię?")) return;
+  dane = domyslne();
+  zapisz();
+  applyUstawienia();
+  go("kursy");
+}
+
+// ===================== START =====================
+applyUstawienia();
+odswiezPasek();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+</script>
+</body>
+</html>
