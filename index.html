@@ -50,6 +50,7 @@ h2{font-size:1.7em}
 .btn.wide{width:100%}
 .btn.sel{outline:3px solid var(--accent2);outline-offset:2px}
 .btn.kb{min-height:64px;font-size:1.25em;padding:10px}
+.btn.kfr{background:linear-gradient(135deg,#ffd166,#f4a261);color:#3b1f05}
 
 input,select,textarea{width:100%;font:inherit;padding:14px;border-radius:10px;border:2px solid var(--line);background:var(--inBg);color:var(--inTxt);margin:6px 0 16px;box-sizing:border-box}
 input[type=checkbox],input[type=range]{width:auto}
@@ -131,12 +132,21 @@ label{font-weight:700;display:block}
 .ach-pop{position:fixed;top:24px;right:24px;z-index:1000;min-width:280px;max-width:90vw;background:var(--panel);border:2px solid var(--accent);border-radius:14px;padding:14px 18px;box-shadow:0 12px 34px rgba(0,0,0,.3);animation:pop .4s both;color:var(--text)}
 .ach-pop.out{opacity:0;transition:opacity .4s}
 
-/* ===== KALKULATOR ===== */
-.calc-disp{font-size:1.6em;font-family:Consolas,'Courier New',monospace;text-align:right}
-.calc-out{min-height:60px;font-size:1.4em;padding:12px 4px;text-align:right}
+/* ===== KALKULATOR Z KRESKĄ UŁAMKOWĄ ===== */
+.kalk-wrap{margin-top:16px;padding:16px;border:2px dashed var(--line);border-radius:14px}
+.kdisp{min-height:88px;border:2px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--inBg);color:var(--inTxt);font-family:Consolas,'Courier New',monospace;font-size:1.5em;display:flex;align-items:center;flex-wrap:wrap;gap:4px;outline:none;cursor:text;margin-top:12px}
+.kdisp:focus{box-shadow:0 0 0 4px rgba(247,103,7,.25)}
+.kt{display:inline-block;min-width:8px;min-height:1.3em;padding:0 2px;border-radius:4px;white-space:pre;cursor:text}
+.kt.act,.kn.act,.kd.act{background:rgba(247,103,7,.15)}
+.kfrac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 6px}
+.kn,.kd{min-width:40px;min-height:1.3em;text-align:center;padding:0 8px;border-radius:4px;cursor:text;white-space:pre}
+.kline{width:100%;height:3px;background:currentColor;margin:3px 0;border-radius:2px}
+.kcaret{display:inline-block;width:2px;height:1.15em;background:currentColor;vertical-align:middle;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.kprev{min-height:1.4em;margin-top:8px;font-size:1.05em}
+.calc-out{min-height:44px;font-size:1.4em;padding:8px 4px;text-align:right}
 .calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:14px}
 .calc-eq{width:100%;margin-top:12px}
-.kalk-wrap{margin-top:16px;padding:16px;border:2px dashed var(--line);border-radius:14px}
 
 /* ===== USTAWIENIA ===== */
 .motyw-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -175,9 +185,8 @@ label{font-weight:700;display:block}
       <img src="logo-wide.png" class="logo-wide" alt="Logo" onerror="this.outerHTML='<span class=brand-t>TRENING</span>'">
     </div>
     <div class="chips">
-      <span class="chip">Punkty: <b id="ptsChip">0</b></span>
       <span class="chip">Seria: <b id="streakChip">0</b></span>
-      <span class="chip">Rekord: <b id="recChip">0</b></span>
+      <span class="chip">Rekord serii: <b id="recChip">0</b></span>
     </div>
   </header>
   <main id="view"></main>
@@ -350,7 +359,7 @@ function domyslne(){
   return {
     ustawienia: {motyw:"firmowy", czcionka:"Segoe UI", rozmiar:17, anim:true, kalk:false, kalkTryb:"prosty", mieszane:false},
     kursy: [], historia: [], wydarzenia: [],
-    punkty: 0, seria: 0, maxSeria: 0, sysOk: {},
+    seria: 0, maxSeria: 0, sysOk: {},
     stat: {poprawne:0, bezPodp:0, wyjas:0, kalk:0, ponow:0, dodane:0},
     osiagniete: {}
   };
@@ -413,7 +422,6 @@ function konfetti(){
   }
 }
 function odswiezPasek(){
-  $("ptsChip").textContent = dane.punkty;
   $("streakChip").textContent = dane.seria;
   $("recChip").textContent = dane.maxSeria;
 }
@@ -535,7 +543,7 @@ function renderKursy(){
     <button class="btn" onclick="go('nowy')">${ikona("add")}Nowy kurs</button></div>`;
   if (!dane.kursy.length) h += `<div class="card"><p>Nie masz jeszcze kursów. Dodaj pierwszy, np. z matematyki.</p></div>`;
   h += `<div class="grid">${dane.kursy.map(k => kartaKursu(k, false)).join("")}</div>`;
-  h += `<h2 class="section-t">Zadania systemowe do ćwiczeń</h2><div class="grid">${SYSTEM.map(k => kartaKursu(k, true)).join("")}</div>`;
+  h += `<h2 class="section-t">Zadania systemowe do ćwiczenia</h2><div class="grid">${SYSTEM.map(k => kartaKursu(k, true)).join("")}</div>`;
   V(h);
 }
 function renderNowy(){
@@ -641,6 +649,7 @@ function renderRozwiazuj(id, i){
   }
   odpowiedziono = false; uzytaPodpowiedz = false; wyjOtwarte = false;
   aktualne = {id, i};
+  kReset();
   const p = Math.round(i / k.zadania.length * 100);
   V(`<div class="card pop" id="karta">
     <div class="row between">
@@ -653,7 +662,7 @@ function renderRozwiazuj(id, i){
       onkeydown="klawisz(event,'${id}',${i})">
     <div class="row">
       <button class="btn" id="btnOdp" onclick="sprawdzOdp('${id}',${i})">Odpowiedz</button>
-      <button class="btn" style="background:linear-gradient(135deg,#ffd166,#f4a261);color:#3b1f05" onclick="pokazPodpowiedz()">${ikona("hint")}Podpowiedź (−5 pkt)</button>
+      <button class="btn" style="background:linear-gradient(135deg,#ffd166,#f4a261);color:#3b1f05" onclick="pokazPodpowiedz()">${ikona("hint")}Podpowiedź</button>
       <button class="btn" onclick="pokazWyjasnienie()">${ikona("explain")}Wyjaśnienie</button>
       <button class="btn ghost" onclick="przejdz('rozwiazuj','${id}',${i + 1})">${ikona("next")}Następne</button>
       ${dane.ustawienia.kalk ? `<button class="btn" onclick="pokazKalk()">Kalkulator</button>` : ""}
@@ -663,6 +672,7 @@ function renderRozwiazuj(id, i){
     <div id="wynik" class="result"></div>
     <div id="wyj"></div>
   </div>`);
+  if (dane.ustawienia.kalk) kRender();
   setTimeout(() => { const el = $("odp"); if (el) el.focus(); }, 50);
 }
 function klawisz(e, id, i){
@@ -673,7 +683,11 @@ function klawisz(e, id, i){
 function pokazKalk(){
   const el = $("kalkBox");
   el.classList.toggle("hidden");
-  if (!el.classList.contains("hidden")){ dane.stat.kalk++; zapisz(); }
+  if (!el.classList.contains("hidden")){
+    dane.stat.kalk++; zapisz();
+    kRender();
+    $("kDisp").focus();
+  }
 }
 function pokazPodpowiedz(){
   const k = kurs(aktualne.id), z = k && k.zadania[aktualne.i];
@@ -696,11 +710,8 @@ function sprawdzOdp(id, i){
   odpowiedziono = true;
   const dozwolone = String(z.odpowiedz).split("|").map(s => s.trim().toLowerCase());
   const dobra = dozwolone.includes(podana.toLowerCase());
-  const bylo = czyOk(k).includes(i);
-  const pkt = (dobra && !bylo) ? (uzytaPodpowiedz ? 5 : 10) : 0;
 
   if (dobra){
-    dane.punkty += pkt;
     dane.seria += 1;
     dane.maxSeria = Math.max(dane.maxSeria, dane.seria);
     dane.stat.poprawne += 1;
@@ -713,7 +724,7 @@ function sprawdzOdp(id, i){
   dane.historia.unshift({
     ts: now.getTime(), dzien: klucz(now), data: now.toLocaleString("pl-PL"),
     przedmiot: k.przedmiot, kurs: k.temat, zadanie: i + 1,
-    podana, poprawna: dozwolone[0], dobra, pkt
+    podana, poprawna: dozwolone[0], dobra
   });
   dane.historia = dane.historia.slice(0, 1000);
   zapisz();
@@ -722,7 +733,7 @@ function sprawdzOdp(id, i){
   $("btnOdp").disabled = true;
   let html;
   if (dobra){
-    html = `<span class="ok">Dobrze! ${pkt ? "+" + pkt + " pkt" : "Zadanie było już zaliczone, bez punktów."}</span>`;
+    html = `<span class="ok">Dobrze!</span>`;
     konfetti();
   } else {
     html = `<span class="bad">Nie tym razem.</span> Poprawna odpowiedź: <b>${esc(dozwolone[0])}</b>
@@ -877,7 +888,7 @@ function renderStatystyki(){
     ? wgPrzed.map(x => `<div class="hrow"><span>${esc(x.p)} (${x.ile})</span><div class="bar" style="--w:${x.proc}%"><i></i></div><b>${x.proc}%</b></div>`).join("")
     : `<p class="muted">Brak danych.</p>`;
 
-  const punktyNarast = h.slice().reverse().reduce((acc, x) => { acc.push((acc[acc.length - 1] || 0) + x.pkt); return acc; }, []);
+  const poprawneNarast = h.slice().reverse().reduce((acc, x) => { acc.push((acc[acc.length - 1] || 0) + (x.dobra ? 1 : 0)); return acc; }, []);
 
   const postepKursow = [...SYSTEM, ...dane.kursy].map(k => `<div class="hrow"><span>${esc(k.temat)}</span>
     <div class="bar" style="--w:${proc(k)}%"><i></i></div><b>${proc(k)}%</b></div>`).join("");
@@ -886,7 +897,6 @@ function renderStatystyki(){
     <div class="stat-grid">
       <div class="card stat"><span class="muted">Odpowiedzi</span><b>${ile}</b></div>
       <div class="card stat"><span class="muted">Poprawnych</span><b>${procent}%</b></div>
-      <div class="card stat"><span class="muted">Punkty</span><b>${dane.punkty}</b></div>
       <div class="card stat"><span class="muted">Najdłuższa seria</span><b>${dane.maxSeria}</b></div>
       <div class="card stat"><span class="muted">Dni aktywnych</span><b>${dniAktywne}</b></div>
       <div class="card stat"><span class="muted">Kursy i zestawy</span><b>${dane.kursy.length + SYSTEM.length}</b></div>
@@ -896,7 +906,7 @@ function renderStatystyki(){
       <div class="card"><h3>Poprawne i błędne</h3>${wykresKolowy(dobre, zle)}
         <p class="muted" style="text-align:center">Poprawne: ${dobre} · błędne: ${zle}</p></div>
       <div class="card"><h3>Skuteczność według przedmiotu</h3>${wiersze}</div>
-      <div class="card"><h3>Punkty w czasie</h3>${wykresLiniowy(punktyNarast)}</div>
+      <div class="card"><h3>Poprawne odpowiedzi w czasie</h3>${wykresLiniowy(poprawneNarast)}</div>
       <div class="card" style="grid-column:1/-1"><h3>Postęp w kursach</h3>${postepKursow}</div>
     </div>`);
 }
@@ -904,7 +914,6 @@ function renderStatystyki(){
 // ===================== OSIĄGNIĘCIA: EKRAN =====================
 function renderOsiagniecia(){
   const ile = Object.keys(dane.osiagniete).length;
-  const s = statystyki();
   const karty = OSIAGNIECIA.map(a => {
     const zdobyte = !!dane.osiagniete[a.id];
     return `<div class="card ach ${zdobyte ? "" : "locked"}">
@@ -930,7 +939,7 @@ function renderHistoria(){
     h += `<div class="card" style="padding:16px 22px">
       <span class="${x.dobra ? "ok" : "bad"}">${x.dobra ? "✓" : "✗"}</span>
       <b>${esc(x.przedmiot)}</b> · ${esc(x.kurs)} · zadanie ${x.zadanie}
-      <div class="muted">${esc(x.data)} · Twoja: ${esc(x.podana)} · poprawna: ${esc(x.poprawna)}${x.pkt ? ` · +${x.pkt} pkt` : ""}</div>
+      <div class="muted">${esc(x.data)} · Twoja: ${esc(x.podana)} · poprawna: ${esc(x.poprawna)}</div>
     </div>`;
   });
   V(h);
@@ -1072,42 +1081,149 @@ function fmt(v){
   }
   return `${v.n}/${v.d}`;
 }
-const KEYS_S = [["7","7"],["8","8"],["9","9"],["÷","÷"],["4","4"],["5","5"],["6","6"],["×","×"],
-                ["1","1"],["2","2"],["3","3"],["−","−"],["0","0"],[".","."],["a/b","/"],["+","+"],
-                ["(","("],[")",")"],["⌫","⌫"],["C","C"]];
-const KEYS_N = [["sin","sin("],["cos","cos("],["tan","tan("],["ln","ln("],["log","log("],
-                ["√","sqrt("],["π","π"],["e","e"],["x²","^2"],["^","^"],["|x|","abs("],["x⁻¹","^-1"]];
-function kKeys(){ return dane.ustawienia.kalkTryb === "naukowy" ? [...KEYS_N, ...KEYS_S] : KEYS_S; }
-function kKey(i){
-  const k = kKeys()[i], inp = $("kIn");
-  if (k[1] === "⌫") inp.value = inp.value.slice(0, -1);
-  else if (k[1] === "C"){ inp.value = ""; $("kOut").innerHTML = ""; }
-  else inp.value += k[1];
-  inp.focus();
+
+// --- Stan edytora: lista elementów, każdy to tekst albo ułamek (licznik nad mianownikiem)
+let kst = {items:[{t:"txt", v:""}], f:{i:0, k:"v"}};
+function kReset(){ kst = {items:[{t:"txt", v:""}], f:{i:0, k:"v"}}; }
+function kCurItem(){ return kst.items[kst.f.i]; }
+function kGet(){ const it = kCurItem(); return it.t === "txt" ? it.v : it[kst.f.k]; }
+function kSet(s){ const it = kCurItem(); if (it.t === "txt") it.v = s; else it[kst.f.k] = s; }
+
+// Zamienia edytor na tekst, który rozumie parser. Ułamek to ((licznik)/(mianownik)).
+function kSerialize(){
+  let out = "";
+  const dodaj = piece => {
+    if (out && /[0-9)πe]$/.test(out) && /^[0-9(πa-z]/.test(piece)) out += "*";
+    out += piece;
+  };
+  kst.items.forEach(it => {
+    if (it.t === "txt"){ if (it.v) dodaj(it.v); }
+    else {
+      if (!it.d) throw new Error("uzupełnij mianownik ułamka");
+      dodaj("((" + (it.n || "0") + ")/(" + it.d + "))");
+    }
+  });
+  return out;
 }
+
+function kFocus(i, k){ kst.f = {i, k}; kRender(); }
+function kAppend(s){ kSet(kGet() + s); kRender(); }
+function kClear(){ kReset(); kRender(); }
+
+// Tworzy ułamek. Jeśli kursor stoi za liczbą, ta liczba trafia do licznika.
+function kFrac(){
+  const it = kCurItem();
+  if (it.t === "frac" || it.n !== undefined){
+    if (kst.f.k === "n"){ kst.f.k = "d"; kRender(); }
+    else toast("Ułamek jest już otwarty. Kliknij Dalej, żeby wyjść z mianownika.");
+    return;
+  }
+  let licznik = "";
+  const m = it.v.match(/(\d+(?:[.,]\d+)?)$/);
+  if (m){ licznik = m[1].replace(",", "."); it.v = it.v.slice(0, -m[1].length); }
+  const i = kst.f.i;
+  kst.items.splice(i + 1, 0, {t:"frac", n: licznik, d: ""}, {t:"txt", v:""});
+  kst.f = {i: i + 1, k: "d"};
+  kRender();
+}
+// Wychodzi z mianownika do tekstu za ułamkiem
+function kExit(){
+  const i = kst.f.i;
+  if (kCurItem().t === "frac"){
+    if (!kst.items[i + 1]) kst.items.push({t:"txt", v:""});
+    kst.f = {i: i + 1, k: "v"};
+  }
+  kRender();
+}
+function kBack(){
+  const it = kCurItem();
+  const cur = kGet();
+  if (cur.length){ kSet(cur.slice(0, -1)); kRender(); return; }
+  if (it.t === "frac"){
+    if (kst.f.k === "d"){ kst.f.k = "n"; }
+    else if (!it.d){
+      kst.items.splice(kst.f.i, 1);
+      kst.f = {i: Math.max(0, kst.f.i - 1), k: "v"};
+    }
+  } else if (kst.f.i > 0 && kst.items[kst.f.i - 1].t === "frac"){
+    kst.f = {i: kst.f.i - 1, k: "d"};
+  }
+  kRender();
+}
+
+function kRender(){
+  const d = $("kDisp");
+  if (!d) return;
+  let h = "";
+  kst.items.forEach((it, i) => {
+    if (it.t === "txt"){
+      const act = kst.f.i === i;
+      h += `<span class="kt${act ? " act" : ""}" onclick="kFocus(${i},'v')">${esc(it.v)}${act ? '<span class="kcaret"></span>' : ""}</span>`;
+    } else {
+      const an = kst.f.i === i && kst.f.k === "n";
+      const ad = kst.f.i === i && kst.f.k === "d";
+      h += `<span class="kfrac">
+        <span class="kn${an ? " act" : ""}" onclick="kFocus(${i},'n')">${esc(it.n)}${an ? '<span class="kcaret"></span>' : ""}</span>
+        <span class="kline"></span>
+        <span class="kd${ad ? " act" : ""}" onclick="kFocus(${i},'d')">${esc(it.d)}${ad ? '<span class="kcaret"></span>' : ""}</span>
+      </span>`;
+    }
+  });
+  d.innerHTML = h;
+  let prev = "";
+  try {
+    const s = kSerialize();
+    if (s.trim()) prev = "= " + fmt(parsuj(tokeny(s)));
+  } catch(e){}
+  const p = $("kPrev"), r = $("kRes");
+  if (p) p.textContent = prev;
+  if (r) r.innerHTML = "";
+}
+
 function kCalc(){
-  const s = $("kIn").value.trim();
-  if (!s) return;
+  let s;
+  try { s = kSerialize(); }
+  catch(e){ return $("kRes").innerHTML = `<span class="bad">Błąd: ${esc(e.message)}</span>`; }
+  if (!s.trim()) return;
   try {
     const v = parsuj(tokeny(s));
     const przyb = v.r && v.d !== 1 ? `<div class="muted">≈ ${+(v.n / v.d).toFixed(6)}</div>` : "";
-    $("kOut").innerHTML = `<b>= ${esc(fmt(v))}</b>${przyb}`;
+    $("kRes").innerHTML = `<b>= ${esc(fmt(v))}</b>${przyb}`;
   } catch(e){
-    $("kOut").innerHTML = `<span class="bad">Błąd: ${esc(e.message)}</span>`;
+    $("kRes").innerHTML = `<span class="bad">Błąd: ${esc(e.message)}</span>`;
   }
 }
+
+// Przyciski: zwykły tekst albo polecenie zaczynające się od #
+const KEYS_S = [["7","7"],["8","8"],["9","9"],["÷","÷"],
+                ["4","4"],["5","5"],["6","6"],["×","×"],
+                ["1","1"],["2","2"],["3","3"],["−","-"],
+                ["0","0"],[".","."],["(","("],[")",")"],
+                ["+","+"],["a/b ułamek","#frac"],["Dalej ▸","#exit"],["⌫","#back"],
+                ["C","#clr"]];
+const KEYS_N = [["sin","sin("],["cos","cos("],["tan","tan("],["ln","ln("],["log","log("],
+                ["√","sqrt("],["π","π"],["e","e"],["x²","^2"],["^","^"],["|x|","abs("],["x⁻¹","^-1"]];
+function kKeysArr(){ return dane.ustawienia.kalkTryb === "naukowy" ? [...KEYS_N, ...KEYS_S] : KEYS_S; }
+function kKey(i){
+  const k = kKeysArr()[i][1];
+  if (k[0] === "#"){
+    ({frac: kFrac, exit: kExit, back: kBack, clr: kClear})[k.slice(1)]();
+  } else kAppend(k);
+}
+
 function kalkPanel(){
   const naukowy = dane.ustawienia.kalkTryb === "naukowy";
-  const przyciski = kKeys().map((k, i) => `<button class="btn kb" onclick="kKey(${i})">${esc(k[0])}</button>`).join("");
+  const przyciski = kKeysArr().map((k, i) =>
+    `<button class="btn kb ${k[1] === "#frac" ? "kfr" : ""}" onclick="kKey(${i})">${esc(k[0])}</button>`).join("");
   return `<div id="kalkInner">
     <div class="row">
       <button class="btn small ${!naukowy ? "sel" : ""}" onclick="ustawKalkTryb('prosty')">Prosty</button>
       <button class="btn small ${naukowy ? "sel" : ""}" onclick="ustawKalkTryb('naukowy')">Naukowy</button>
-      <span class="muted">Ułamki: 3/4, mieszane: 1 3/4. Funkcje liczą w stopniach.</span>
+      <span class="muted">Pisz z klawiatury albo klikaj. Znak / albo przycisk „ułamek” tworzy kreskę. Strzałka → wychodzi z mianownika.</span>
     </div>
-    <input id="kIn" class="calc-disp" placeholder="np. 3/4 + 1/6" autocomplete="off"
-      onkeydown="if(event.key==='Enter')kCalc()">
-    <div id="kOut" class="calc-out"></div>
+    <div id="kDisp" class="kdisp" tabindex="0"></div>
+    <div id="kPrev" class="muted kprev"></div>
+    <div id="kRes" class="calc-out"></div>
     <div class="calc-grid">${przyciski}</div>
     <button class="btn wide calc-eq" onclick="kCalc()">= Oblicz</button>
   </div>`;
@@ -1116,13 +1232,30 @@ function ustawKalkTryb(t){
   dane.ustawienia.kalkTryb = t;
   zapisz();
   const el = $("kalkInner");
-  if (el){ el.outerHTML = kalkPanel(); $("kIn").focus(); }
+  if (el){ el.outerHTML = kalkPanel(); kRender(); $("kDisp").focus(); }
   else renderKalkulator();
 }
 function renderKalkulator(){
+  kReset();
   V(navHTML() + `<div class="card pop"><h2>Kalkulator</h2>${kalkPanel()}</div>`);
-  $("kIn").focus();
+  kRender();
+  $("kDisp").focus();
 }
+
+// Klawiatura: działa, gdy kalkulator jest widoczny i nie piszesz w innym polu tekstowym
+window.addEventListener("keydown", e => {
+  const d = $("kDisp");
+  if (!d || !d.offsetParent) return;
+  const ae = document.activeElement;
+  if (ae && ae !== d && /INPUT|TEXTAREA|SELECT/.test(ae.tagName)) return;
+  const k = e.key;
+  if (/^[0-9.+\-*()^]$/.test(k)){ e.preventDefault(); kAppend(k); }
+  else if (k === "/"){ e.preventDefault(); kFrac(); }
+  else if (k === "Backspace"){ e.preventDefault(); kBack(); }
+  else if (k === "Enter"){ e.preventDefault(); kCalc(); }
+  else if (k === "ArrowRight"){ e.preventDefault(); kExit(); }
+  else if (k === "Escape"){ e.preventDefault(); kClear(); }
+});
 
 // ===================== HELP =====================
 const PROMPT_AI = `Jesteś nauczycielem przygotowującym zadania do aplikacji "Trening". Do wiadomości dołączam zdjęcia zadań z przedmiotu: [WPISZ PRZEDMIOT].
@@ -1157,8 +1290,8 @@ function renderHelp(){
   </div>
   <div class="card"><h3>Skróty i wskazówki</h3>
     <p>Enter w polu odpowiedzi sprawdza odpowiedź, a kolejny Enter przechodzi dalej.</p>
-    <p>Podpowiedź kosztuje 5 pkt zamiast 10 za poprawną odpowiedź. Błędna odpowiedź zeruje serię.</p>
-    <p>Po błędnej odpowiedzi kliknij <b>Spróbuj ponownie</b>. Punkty dostajesz tylko za pierwsze poprawne rozwiązanie zadania.</p>
+    <p>Błędna odpowiedź zeruje serię. Po błędnej kliknij <b>Spróbuj ponownie</b>, żeby rozwiązać to samo zadanie od nowa.</p>
+    <p>W kalkulatorze ułamek tworzysz przyciskiem „ułamek” albo znakiem /. Liczba przed kreską staje się licznikem. Strzałka → albo Dalej ▸ wychodzi z mianownika.</p>
     <p>Strzałka ← Wróć w nagłówku cofa Cię do poprzedniego ekranu, a Start prowadzi do listy kursów.</p>
     <p>Dane zapisują się w przeglądarce tego komputera. Zrób kopię zapasową w Ustawieniach, zanim wyczyścisz przeglądarkę.</p>
     <p>Zadania systemowe są gotowe do ćwiczenia i nie da się ich edytować ani usunąć.</p>
@@ -1193,7 +1326,7 @@ function renderUstawienia(){
     <div class="card"><h2>Kalkulator</h2>
       <div class="row">
         <button class="btn ${u.kalk ? "sel" : ""}" onclick="przelaczKalk()">Kalkulator: ${u.kalk ? "włączony" : "wyłączony"}</button>
-        <button class="btn ${u.mieszane ? "sel" : ""}" onclick="przelaczMieszane()">Ułamki mieszane: ${u.mieszane ? "tak" : "nie"}</button>
+        <button class="btn ${u.mieszane ? "sel" : ""}" onclick="przelaczMieszane()">Ułamki mieszane w wyniku: ${u.mieszane ? "tak" : "nie"}</button>
       </div>
       <p class="muted">Gdy kalkulator jest włączony, pojawia się w menu oraz jako przycisk pod zadaniem, który pokazuje lub chowa panel.</p></div>
     <div class="card"><h2>Kopia zapasowa</h2>
